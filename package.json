@@ -1,0 +1,26 @@
+{
+  "name": "noisefy",
+  "version": "0.0.1",
+  "description": "JS library to interact with web audio interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arturogalan/noisefy.git"
+  },
+  "keywords": [
+    "web",
+    "audio",
+    "javascript",
+    "guitar",
+    "pedal"
+  ],
+  "author": "Arturo Galan",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/arturogalan/noisefy/issues"
+  },
+  "homepage": "https://github.com/arturogalan/noisefy#readme"
+}
