@@ -4,12 +4,12 @@ import {SingleAudioNode} from '../SingleAudioNode';
  * The audio-effects output class.
  * This class connects to your device's audio output.
  */
-export class Output extends SingleAudioNode{
-    constructor(audioContext) {
-        super(audioContext);
+export default class Output extends SingleAudioNode {
+  constructor(audioContext) {
+    super(audioContext);
 
-        if (this.audioContext) {
-            this.node = audioContext.destination;
-        }
+    if (this.audioContext) {
+      this.node = audioContext.destination;
     }
+  }
 }

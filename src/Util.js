@@ -1,3 +1,4 @@
+let win = typeof window !== 'undefined' ? window : global;
 /**
  * Check if the current browser supports getUserMedia.
  */
@@ -15,7 +16,7 @@ const audioContext = win.AudioContext ||
   win.mozAudioContext ||
   win.msAudioContext;
 
-export default { 
-  hasGetUserMedia = !!getUserMedia,
-  hasAudioContext = !!audioContext,
-}
+export default {
+  hasGetUserMedia: ()=> !!getUserMedia,
+  hasAudioContext: ()=> !!audioContext,
+};
