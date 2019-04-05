@@ -1,5 +1,5 @@
 
-import {SingleAudioNode} from './SingleAudioNode';
+import SingleAudioNode from './SingleAudioNode';
 
 /**
  * The multi-audio-node class.

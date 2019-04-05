@@ -1,4 +1,4 @@
-import {SingleAudioNode} from '../SingleAudioNode';
+import SingleAudioNode from '../SingleAudioNode';
 
 /**
  * The audio-effects volume class.

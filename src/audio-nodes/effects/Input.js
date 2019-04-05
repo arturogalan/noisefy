@@ -1,5 +1,5 @@
 
-import {SingleAudioNode} from '../SingleAudioNode';
+import SingleAudioNode from '../SingleAudioNode';
 import {hasGetUserMedia} from '../../Util';
 
 export default class Input extends SingleAudioNode {
