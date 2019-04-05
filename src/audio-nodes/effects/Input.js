@@ -1,5 +1,6 @@
 
 import SingleAudioNode from '../SingleAudioNode';
+import MultiAudioNode from '../MultiAudioNode';
 import {hasGetUserMedia} from '../../Util';
 
 export default class Input extends SingleAudioNode {
@@ -24,11 +25,24 @@ export default class Input extends SingleAudioNode {
     return new Promise((resolve, reject)=> {
       if (hasGetUserMedia) {
         navigator.getUserMedia({
-          audio: true,
+          audio: {
+            optional: [
+              {
+                "echoCancellation" : false,
+              },
+              {
+                "mozNoiseSuppression": false,
+              },
+              {
+                "mozAutoGainControl": false,
+              },
+  
+            ]
+        }
         }, (stream)=> {
           this.input = stream;
           this._hasPermissions = true;
-
+          window.stream = stream; // make stream available to console
           // Connect the deffered connects
           this._deferredConnects.forEach((node)=> {
             this.connect(node);
@@ -52,12 +66,13 @@ export default class Input extends SingleAudioNode {
     // If there is no input node yet, connect when there is a node
     if (typeof this.node === 'undefined') {
       this._deferredConnects.push(node);
-
       return node;
     }
-
-    this.node.connect(node);
-
+    if (node instanceof SingleAudioNode || node instanceof MultiAudioNode) {  
+      this.node.connect(node.node);
+    } else {
+      this.node.connect(node);
+    }
     return node;
   }
 

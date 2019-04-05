@@ -9,16 +9,27 @@ const expect = chai.expect;
 
 let lib;
 
-describe('Given an instance of my Input library', ()=> {
+describe('Given an instance of my Cat library', ()=> {
   before(()=> {
     lib = new Input();
   });
-  describe('when I need the name', ()=> {
-    it('should return the name', ()=> {
-      expect(lib.name).to.be.equal('Input');
+  describe('Input tests;', ()=> {
+    it('should have a getUserMedia property', ()=> {
+      expect(lib).to.have.property('getUserMedia');
     });
   });
 });
+
+// describe('Given an instance of my Input library', ()=> {
+//   before(()=> {
+//     lib = new Input();
+//   });
+//   describe('when I need the name', ()=> {
+//     it('should return the name', ()=> {
+//       expect(lib.name).to.be.equal('Input');
+//     });
+//   });
+// });
 
 // describe('Given an instance of my Dog library', ()=> {
 //   before(()=> {

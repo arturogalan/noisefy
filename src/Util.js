@@ -7,6 +7,7 @@ const getUserMedia = navigator.getUserMedia ||
   navigator.mozGetUserMedia ||
   navigator.msGetUserMedia;
 
+const hasGetUserMedia = !!getUserMedia;
 /**
  * Check if the current browser supports the web-audio-api .
  */
@@ -16,7 +17,9 @@ const audioContext = win.AudioContext ||
   win.mozAudioContext ||
   win.msAudioContext;
 
-export default {
-  hasGetUserMedia: ()=> !!getUserMedia,
-  hasAudioContext: ()=> !!audioContext,
+const hasAudioContext = !!audioContext;
+
+export {
+  hasGetUserMedia,
+  hasAudioContext,
 };

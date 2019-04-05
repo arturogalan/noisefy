@@ -49,7 +49,11 @@ export default class SingleAudioNode {
    * @return {AudioNode|SingleAudioNode}
    */
   connect(node) {
-    this.node.connect(node);
+    if (node instanceof SingleAudioNode) {
+      this.node.connect(node.node);
+    } else {
+      this.node.connect(node);
+    }
     return node;
   }
 
