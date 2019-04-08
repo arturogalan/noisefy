@@ -4,7 +4,7 @@ import SingleAudioNode from '../SingleAudioNode';
  * The audio-effects tremolo class.
  * This class lets you add a tremolo effect.
  */
-export class Tremolo extends SingleAudioNode {
+export default class Tremolo extends SingleAudioNode {
   // private _speed: number;
 
   constructor(audioContext) {

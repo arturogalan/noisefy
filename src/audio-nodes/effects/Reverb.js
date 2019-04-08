@@ -45,7 +45,7 @@ export default class Reverb extends MultiAudioNode {
    * @param {Any} file
    * @return {Promise<AudioBuffer>}
    */
-  getInputResponseFile(file) {
+  static getInputResponseFile(file) {
     return fetch(file, {
       method: 'get',
     }).then((response)=> {
@@ -106,6 +106,7 @@ export default class Reverb extends MultiAudioNode {
    * @param  {Stream} buffer
    */
   set buffer(buffer) {
+    
     this.audioContext.decodeAudioData(buffer, (buffer)=> {
       // Set the internal buffer value
       this._buffer = buffer;

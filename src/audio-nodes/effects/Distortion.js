@@ -4,7 +4,7 @@ import MultiAudioNode from '../MultiAudioNode';
  * The audio-effects distortion class.
  * This class lets you add a distortion effect.
  */
-export class Distortion extends MultiAudioNode {
+export default class Distortion extends MultiAudioNode {
   // private _intensity: number;
   // private _gain: number;
   // private _lowPassFilter: boolean;
