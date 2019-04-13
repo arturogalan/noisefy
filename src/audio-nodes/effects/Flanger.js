@@ -4,7 +4,7 @@ import MultiAudioNode from '../MultiAudioNode';
  * The audio-effects flanger class.
  * This class lets you add a flanger effect.
  */
-export class Flanger extends MultiAudioNode {
+export default class Flanger extends MultiAudioNode {
   // private _delay: number;
   // private _depth: number;
   // private _feedback: number;
