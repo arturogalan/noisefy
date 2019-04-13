@@ -4,6 +4,9 @@ import MultiAudioNode from '../MultiAudioNode';
 import {hasGetUserMedia} from '../../Util';
 
 export default class Input extends SingleAudioNode {
+      // input.level = 0.5;
+    // input.mute = false;
+    
   constructor(audioContext) {
     super(audioContext);
     this._deferredConnects = [];
