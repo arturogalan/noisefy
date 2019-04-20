@@ -7,7 +7,7 @@ import Output from './audio-nodes/effects/Output';
 import Reverb from './audio-nodes/effects/Reverb';
 import Tremolo from './audio-nodes/effects/Tremolo';
 import Volume from './audio-nodes/effects/Volume';
-import {hasAudioContext, hasGetUserMedia} from './Util';
+import {hasAudioContext, hasGetUserMedia, deviceList, deviceListHandler} from './Util';
 
 export {
   Delay,
@@ -20,4 +20,6 @@ export {
   Volume,
   hasAudioContext,
   hasGetUserMedia,
+  deviceList,
+  deviceListHandler,
 };

@@ -4,9 +4,6 @@ import MultiAudioNode from '../MultiAudioNode';
 import {hasGetUserMedia} from '../../Util';
 
 export default class Input extends SingleAudioNode {
-      // input.level = 0.5;
-    // input.mute = false;
-    
   constructor(audioContext) {
     super(audioContext);
     this._deferredConnects = [];
@@ -31,17 +28,16 @@ export default class Input extends SingleAudioNode {
           audio: {
             optional: [
               {
-                "echoCancellation" : false,
+                'echoCancellation': false,
               },
               {
-                "mozNoiseSuppression": false,
+                'mozNoiseSuppression': false,
               },
               {
-                "mozAutoGainControl": false,
+                'mozAutoGainControl': false,
               },
-  
-            ]
-        }
+            ],
+          },
         }, (stream)=> {
           this.input = stream;
           this._hasPermissions = true;
