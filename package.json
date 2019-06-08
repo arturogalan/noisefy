@@ -1,6 +1,6 @@
 {
   "name": "noisefy",
-  "version": "0.0.11",
+  "version": "0.0.14",
   "description": "JS library to interact with web audio interface",
   "main": "src/index.js",
   "scripts": {

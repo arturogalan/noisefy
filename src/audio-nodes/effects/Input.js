@@ -24,33 +24,65 @@ export default class Input extends SingleAudioNode {
   getUserMedia() {
     return new Promise((resolve, reject)=> {
       if (hasGetUserMedia) {
-        navigator.getUserMedia({
-          audio: {
-            optional: [
-              {
-                'echoCancellation': false,
-              },
-              {
-                'mozNoiseSuppression': false,
-              },
-              {
-                'mozAutoGainControl': false,
-              },
-            ],
-          },
-        }, (stream)=> {
-          this.input = stream;
-          this._hasPermissions = true;
-          window.stream = stream; // make stream available to console
-          // Connect the deffered connects
-          this._deferredConnects.forEach((node)=> {
-            this.connect(node);
-          });
+        // Firefox
+        if (navigator.mozGetUserMedia) {
+          navigator.mediaDevices.getUserMedia({
+            audio: {
+              optional: [
+                {
+                  'echoCancellation': false,
+                },
+                {
+                  'mozNoiseSuppression': false,
+                },
+                {
+                  'mozAutoGainControl': false,
+                },
+              ],
+            },
+          }, (stream)=> {
+            this.input = stream;
+            this._hasPermissions = true;
+            window.stream = stream; // make stream available to console
+            // Connect the deffered connects
+            this._deferredConnects.forEach((node)=> {
+              this.connect(node);
+            });
 
-          resolve(stream);
-        }, (error)=> {
-          reject(error);
-        });
+            resolve(stream);
+          }, (error)=> {
+            reject(error);
+          });
+        // Chrome
+        } else {
+          navigator.getUserMedia({
+            audio: {
+              optional: [
+                {
+                  'echoCancellation': false,
+                },
+                {
+                  'mozNoiseSuppression': false,
+                },
+                {
+                  'mozAutoGainControl': false,
+                },
+              ],
+            },
+          }, (stream)=> {
+            this.input = stream;
+            this._hasPermissions = true;
+            window.stream = stream; // make stream available to console
+            // Connect the deffered connects
+            this._deferredConnects.forEach((node)=> {
+              this.connect(node);
+            });
+
+            resolve(stream);
+          }, (error)=> {
+            reject(error);
+          });
+        }
       } else {
         reject(Error('Your browser does not support the use of user-media, please upgrade or use another browser!'));
       }
@@ -67,7 +99,7 @@ export default class Input extends SingleAudioNode {
       this._deferredConnects.push(node);
       return node;
     }
-    if (node instanceof SingleAudioNode || node instanceof MultiAudioNode) {  
+    if (node instanceof SingleAudioNode || node instanceof MultiAudioNode) {
       this.node.connect(node.node);
     } else {
       this.node.connect(node);
