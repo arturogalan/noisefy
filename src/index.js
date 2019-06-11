@@ -1,4 +1,5 @@
 
+import Equalizer from './audio-nodes/effects/Equalizer';
 import Delay from './audio-nodes/effects/Delay';
 import Distortion from './audio-nodes/effects/Distortion';
 import Flanger from './audio-nodes/effects/Flanger';
@@ -10,6 +11,7 @@ import Volume from './audio-nodes/effects/Volume';
 import {hasAudioContext, hasGetUserMedia, deviceList, deviceListHandler} from './Util';
 
 export {
+  Equalizer,
   Delay,
   Distortion,
   Flanger,
