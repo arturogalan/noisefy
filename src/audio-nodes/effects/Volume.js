@@ -11,11 +11,8 @@ export default class Volume extends SingleAudioNode {
     // Create the gain-node which we'll use to change the volume.
     this.node = this.audioContext.createGain();
 
-    // The initial volume level is 100%.
-    this.level = 1;
-
-    // The effect is not muted by default.
-    this.mute = false;
+    // The initial volume level is 0
+    this.level = 0;
   }
 
   /**
@@ -32,18 +29,13 @@ export default class Volume extends SingleAudioNode {
      */
   set level(volume) {
     // Parse the volume, it can not be lower than 0.
-    let vol = parseFloat(volume);
-
-    vol = (vol >= 0 ? vol : 0);
-
-    // Set the internal volume value.
-    this._level = vol;
-
-    // Set the gainNode's gain value.
-    this.node.gain.value = vol;
-
-    // Set the internal mute value.
-    this._mute = (vol === 0);
+    let vol = parseFloat(volume >= 0 ? volume : 0);
+    if (this._mute && vol > 0) {
+      this._levelBeforeMute = vol;
+    } else {
+      this.node.gain.value = this._level = vol;
+      this._mute = (vol === 0);
+    }
   }
 
   /**
@@ -61,7 +53,6 @@ export default class Volume extends SingleAudioNode {
   set mute(mute) {
     // Set the internal mute value.
     this._mute = !!mute;
-
     if (this._mute) {
       // Keep track of the volume before muting
       this._levelBeforeMute = this.level;

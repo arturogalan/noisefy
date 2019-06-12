@@ -32,9 +32,9 @@ export default class MultiAudioNode extends SingleAudioNode {
      */
   connect(node) {
     if (node instanceof SingleAudioNode || node instanceof MultiAudioNode) {
-      this.node.connect(node.node);
+      this.output.connect(node.node);
     } else {
-      this.node.connect(node);
+      this.output.connect(node);
     }
     return node;
   }
