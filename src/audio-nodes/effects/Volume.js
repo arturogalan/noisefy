@@ -7,10 +7,8 @@ import SingleAudioNode from '../SingleAudioNode';
 export default class Volume extends SingleAudioNode {
   constructor(audioContext) {
     super(audioContext);
-
     // Create the gain-node which we'll use to change the volume.
     this.node = this.audioContext.createGain();
-
     // The initial volume level is 0
     this.level = 0;
   }
@@ -51,12 +49,10 @@ export default class Volume extends SingleAudioNode {
      * @param  {Boolean} mute Whether the effect is muted.
      */
   set mute(mute) {
-    // Set the internal mute value.
     this._mute = !!mute;
     if (this._mute) {
       // Keep track of the volume before muting
       this._levelBeforeMute = this.level;
-
       // Set the volume to 0
       this.level = 0;
     } else {
