@@ -41,6 +41,11 @@ const deviceListHandler = function(callback) {
     });
   };
 };
+const validateValues = function(value, range, effectName) {
+  if (range[0] > value || value > range[1]) {
+    throw Error(`The value ${value} setted for the effect ${effectName} is wrong, must be in range: ${range}`);
+  }
+};
 
 export {
   hasGetUserMedia,
@@ -48,4 +53,5 @@ export {
   hasAudioContext,
   deviceList,
   deviceListHandler,
+  validateValues,
 };
