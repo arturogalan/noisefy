@@ -10,6 +10,7 @@ import Reverb from './audio-nodes/effects/Reverb';
 import Tremolo from './audio-nodes/effects/Tremolo';
 import Volume from './audio-nodes/effects/Volume';
 import {hasAudioContext, hasGetUserMedia, deviceList, deviceListHandler} from './Util';
+import {DISTORTION_TYPES} from './audio-nodes/factories/DistortionGenerator';
 
 export {
   Equalizer,
@@ -26,4 +27,5 @@ export {
   hasGetUserMedia,
   deviceList,
   deviceListHandler,
+  DISTORTION_TYPES,
 };
