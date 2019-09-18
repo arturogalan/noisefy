@@ -1,23 +1,18 @@
 import MultiAudioNode from '../MultiAudioNode';
-// const irf = require('file!../../assets/impulses/reverb/hall-reverb.ogg');
-// import irf from "../../assets/impulses/reverb/cardiod-rear-levelled.wav";
-
-const irf = '/assets/impulses/reverb/hall-reverb.ogg';
-
-
+const irf = require('./src/assets/impulses/cabinet/marshall-4_impact.wav');
 const getInputResponseFile = function(file) {
   return fetch(file, {
     method: 'get',
   }).then((response)=> {
     return response.arrayBuffer();
   });
-};
+}
 
 /**
- * The audio-effects reverb class.
- * This class lets you add a reverb effect.
+ * The audio-effects cabinet class.
+ * This class lets you add a cabinet effect.
  */
-export default class Reverb extends MultiAudioNode {
+export default class Cabinet extends MultiAudioNode {
   // _wet;
   // _level;
   // _buffer;
@@ -28,7 +23,7 @@ export default class Reverb extends MultiAudioNode {
     this.nodes = {
       inputGainNode: audioContext.createGain(), // Create the input and output gain-node
       outputGainNode: audioContext.createGain(),
-      convolverNode: audioContext.createConvolver(), // Create the convolver node to create the reverb effect
+      convolverNode: audioContext.createConvolver(), // Create the convolver node to create the cabinet effect
       wetGainNode: audioContext.createGain(), // Create the wetness controll gain-node
       levelGainNode: audioContext.createGain(), // Create the level controll gain-node
     };
@@ -53,6 +48,11 @@ export default class Reverb extends MultiAudioNode {
     this.level = 1;
   }
 
+  /**
+   * Get the standard input responsefile.
+   * @param {Any} file
+   * @return {Promise<AudioBuffer>}
+   */
   set responseFile(file) {
     // TODO Get the file from mapping constants
     getInputResponseFile(irf).then((buffer)=> {

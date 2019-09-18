@@ -1,13 +1,14 @@
 /* global __dirname, require, module*/
 
-const webpack = require('webpack');
+// const webpack = require('webpack');
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 const pkg = require('./package.json');
 
 let libraryName = pkg.name;
 
-let outputFile, mode;
+let outputFile;
+let mode;
 
 if (env === 'build') {
   mode = 'production';
@@ -16,6 +17,19 @@ if (env === 'build') {
   mode = 'development';
   outputFile = libraryName + '.js';
 }
+
+const createLintingRule = () => ({
+  test: /\.(js|vue)$/,
+  loader: 'eslint-loader',
+  enforce: 'pre',
+  include: [resolve('src'), resolve('test')],
+  options: {
+    formatter: require('eslint-friendly-formatter'),
+    emitWarning: true,
+    failOnError: mode === 'production',
+    fix: mode !== 'production',
+  }
+})
 
 const config = {
   mode: mode,
@@ -31,16 +45,29 @@ const config = {
   },
   module: {
     rules: [
+      ...createLintingRule(),
       {
         test: /(\.jsx|\.js)$/,
         loader: 'babel-loader',
         exclude: /(node_modules|bower_components)/
       },
       {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+          },
+        ],
+      },
+      {
         test: /(\.jsx|\.js)$/,
         loader: 'eslint-loader',
         exclude: /node_modules/
-      }
+      },
+      {
+        test: /\.opts$/,
+        loader: 'ignore-loader'
+      },
     ]
   },
   resolve: {

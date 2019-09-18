@@ -1,4 +1,6 @@
 const DISTORTION_TYPES = {
+  ASYMETRIC: 'asymetric',
+  STANDARD: 'standard',
   SUPER_CLEAN: 'superClean',
   CLEAN: 'clean',
   SMOOTH: 'smooth',
@@ -6,11 +8,9 @@ const DISTORTION_TYPES = {
   SUPERFUZZ: 'superFuzz',
   CRUNCH: 'crunch',
   NOT_SO_DISTORTED: 'notSoDistorted',
-  STANDARD: 'standard',
   STANDARD_LOW: 'standardLow',
   HIGH_GAIN: 'highGain',
   HIGH_GAIN_MODERN: 'highGainModern',
-  ASYMETRIC: 'asymetric',
   BEZIER: 'bezier',
   CLASS_A: 'classA',
   VERTICAL: 'vertical',
@@ -51,7 +51,7 @@ const getDistortionTypeGenerateFunction = (type)=> {
       }
       return curve;
     },
-    // amount not relevant, asymetric fixed curve, usually helpful to generate ODD harmonics
+    // amount not relevant, asymetric fixed curve, helpful to generate ODD harmonics
     [DISTORTION_TYPES.ASYMETRIC]: (intens)=> {
       let intensity = intens / 1500;
       let curve = new Float32Array(44100);
@@ -68,7 +68,7 @@ const getDistortionTypeGenerateFunction = (type)=> {
       }
       return curve;
     },
-  }[type];
+  }[type] || (()=> {});
 };
 
 export {
