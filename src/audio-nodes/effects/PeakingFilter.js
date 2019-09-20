@@ -1,5 +1,5 @@
 import BiquadFilter from './BiquadFilter';
-import {BIQUAD_FILTER_TYPES} from './BiquadFilter';
+import {BIQUAD_FILTER_TYPES} from '../factories/FiltersGenerator';
 
 /**
  * The audio-effects Basic Highpass filter class.

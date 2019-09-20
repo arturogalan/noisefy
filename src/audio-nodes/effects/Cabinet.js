@@ -1,12 +1,13 @@
 import MultiAudioNode from '../MultiAudioNode';
-const irf = require('./src/assets/impulses/cabinet/marshall-4_impact.wav');
+const irf = './src/assets/impulses/cabinet/marshall-4_impact.wav';
+
 const getInputResponseFile = function(file) {
   return fetch(file, {
     method: 'get',
   }).then((response)=> {
     return response.arrayBuffer();
   });
-}
+};
 
 /**
  * The audio-effects cabinet class.
@@ -48,11 +49,6 @@ export default class Cabinet extends MultiAudioNode {
     this.level = 1;
   }
 
-  /**
-   * Get the standard input responsefile.
-   * @param {Any} file
-   * @return {Promise<AudioBuffer>}
-   */
   set responseFile(file) {
     // TODO Get the file from mapping constants
     getInputResponseFile(irf).then((buffer)=> {

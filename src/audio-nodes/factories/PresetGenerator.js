@@ -49,7 +49,7 @@ const PRESET_TYPES = {
     // STAGE2 - disto 2 EVEN harmonics
     'stage2': {
       // 'distoName'
-      'distortionType': 'notSoDistorded',
+      'distortionType': 'notSoDistorted',
       // 'K2'
       'intensity': '7.8',
       // gain2

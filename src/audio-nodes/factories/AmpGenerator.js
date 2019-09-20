@@ -168,7 +168,7 @@ export const AMP_TYPES_SCHEMAS = {
         settingsList: [
           {
             name: 'distortionType',
-            value: 'notSoDistorded',
+            value: 'notSoDistorted',
             type: AMP_SETTING_TYPE.SELECT,
           },
           {

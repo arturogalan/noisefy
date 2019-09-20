@@ -1,16 +1,7 @@
+/* eslint-disable no-tabs */
+/* eslint-disable max-len */
 import SingleAudioNode from '../SingleAudioNode';
-
-export const BIQUAD_FILTER_TYPES = {
-  HIGHPASS: 'highpass',
-  LOWPASS: 'lowpass',
-  BANDPASS: 'bandpass',
-  LOWSHELF: 'lowshelf',
-  HIGHSELF: 'highshelf',
-  PEAKING: 'peaking',
-  NOTCH: 'notch',
-  ALLPASS: 'allpass',
-};
-
+import {BIQUAD_FILTER_TYPES} from '../factories/FiltersGenerator';
 
 // type       |Description                                                                        | frequency                                                             |    Q	                                                                        |    gain                                                                 |
 // lowpass    |Standard second-order resonant lowpass filter with 12dB/octave rolloff.            | The cutoff frequency.                                                 | Indicates how peaked the frequency is around the cutoff.                     | Not used                                                                |
@@ -41,13 +32,13 @@ export default class BiquadFilter extends SingleAudioNode {
     this.node = this.audioContext.createBiquadFilter();
     this.type = filterType;
   }
-  get type(){
+  get type() {
     return this._type;
   }
   set type(typeRequested) {
     if (Object.values(BIQUAD_FILTER_TYPES).includes(typeRequested)) {
       this._type = typeRequested;
-      this.node.type =  this._type;
+      this.node.type = this._type;
       console.log(`The biquad type ${typeRequested} has been set`);
     } else {
       throw new Error(`The biquadFilter type ${typeRequested} is not included in the filters set.`);
@@ -69,7 +60,7 @@ export default class BiquadFilter extends SingleAudioNode {
     this.node.frequency.value = this._frequency;
   }
   get Q() {
-    this._Q;
+    return this._Q;
   }
   set Q(value) {
     this._Q = value;

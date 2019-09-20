@@ -9,6 +9,26 @@ import MultiAudioNode from './MultiAudioNode';
  * The output node is the last audio-node in the las component effect, the next effect will be connected to this node.
  */
 export default class MultiEffectNode {
+  constructor(audioContext) {
+    // Set the audio-context.
+    this._audioContext = audioContext;
+  }
+
+  /**
+   * The effects AudioContext getter.
+   * @return {AudioContext} The AudioContext used by the effect.
+   */
+  get audioContext() {
+    return this._audioContext;
+  }
+
+  /**
+   * The effects AudioContext setter.
+   * @param  {AudioContext} audioContext
+   */
+  set audioContext(audioContext) {
+    this._audioContext = audioContext;
+  }
   /**
    * The effect's audio-node getter.
    * @return {AudioNode} The audio-node used for the effect.
