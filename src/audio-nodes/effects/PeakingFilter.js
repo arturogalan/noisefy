@@ -9,6 +9,6 @@ export default class HighpassFilter extends BiquadFilter {
   constructor(audioContext) {
     super(audioContext, BIQUAD_FILTER_TYPES.PEAKING);
     this.frequency = 3900;
-    this.Q = 0.7071;
+    this.Q = 1;
   }
 }

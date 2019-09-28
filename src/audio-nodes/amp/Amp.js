@@ -37,7 +37,6 @@ export default class Amp extends MultiEffectNode {
       }
       this._components[component.name] = initializatedComponent;
     }
-
     //Connect them all!
     const componentsKeys = Object.keys(this._components);
     componentsKeys.forEach((componentKey, index)=> {
@@ -45,7 +44,7 @@ export default class Amp extends MultiEffectNode {
         console.log('setting input', componentKey);
         this.input = this._components[componentKey];
       }
-      if (index > 1) {
+      if (index >= 1) {
         console.log('connecting', componentsKeys[index - 1], 'with', componentKey );
         this._components[componentsKeys[index - 1]].connect(this._components[componentKey]);
       }
@@ -54,20 +53,6 @@ export default class Amp extends MultiEffectNode {
         this.output = this._components[componentKey];
       }
     });
-    // iterateObjectProps(this._components, (component, index, componentsKeys)=> {
-    //   if (index === 0) {
-    //     console.log('setting input ', component.name);
-    //     this.input = component;
-    //   }
-    //   if (index > 1) {
-    //     console.log('connecting ', componentsKeys[index - 1], 'with ', component.name );
-    //     this._components[componentsKeys[index - 1]].connect(component);
-    //   }
-    //   if (index === componentsKeys.length) {
-    //     console.log('setting output ', component.name);
-    //     this.output = component;
-    //   }
-    // });
     //Set the type
     this._ampType = ampTypeRequested;
   }
@@ -75,9 +60,17 @@ export default class Amp extends MultiEffectNode {
   // Expose method utility to set components properties
   setAmpComponentEffectProperty({componentName, componentProperty, value}) {
     const component = this._components[componentName];
+    const componentProp = component[componentProperty];
+    const componentDefinition = AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS[componentName];
+    const componentPropDefinition = componentDefinition.settingsList.find((prop)=> prop.name === componentProperty);
     if (!component) {console.error(`component ${componentName} not found in amp`); return;}
-    if (!component[componentProperty]) {console.error(`componentProperty ${componentProperty} not found in component ${componentName}`); return;}
-    component[componentProperty] = value;
+    if (componentProp === undefined) {console.error(`componentProperty ${componentProperty} not found in component ${componentName}`); return;}
+    if (!componentDefinition) {console.error(`component definition for ${componentName} not found in AmpGenerator`); return;}
+    if (componentPropDefinition === undefined) {console.error(`componentPropDefinition ${componentProperty} not found in AmpGenerator component ${componentName}`); return;}
+
+    const normalize = componentPropDefinition.normalize || ((val)=> val);
+    component[componentProperty] = normalize(value);
+    console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
   }
   // Retrieve all the settings of type Knob of all the components of the amp, grouped by component
   getKnobComponentsSettings() {

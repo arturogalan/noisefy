@@ -68,6 +68,18 @@ const getDistortionTypeGenerateFunction = (type)=> {
       }
       return curve;
     },
+    [DISTORTION_TYPES.NOT_SO_DISTORTED]: (intens)=> {
+      let intensity = intens / 150;
+      intensity = Math.pow(intensity + 2, 3);
+      const amount = 22050;
+      const curve = new Float32Array(amount);
+
+      for (let d = 0; 22050 > d; d += 1) {
+        let f = 2 * d / 22050 - 1;
+        curve[d] = (1 + intensity) * f / (1 + intensity * Math.abs(f));
+      }
+      return curve;
+    },
   }[type] || (()=> {});
 };
 

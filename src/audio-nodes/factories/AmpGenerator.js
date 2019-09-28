@@ -35,27 +35,38 @@ export const AMP_TYPES = {
 };
 export const AMP_TYPES_SCHEMAS = {
   [AMP_TYPES.WARSHALL]: {
-    // OUTPUT:
     COMPONENTS: {
-      volume: {
-        name: 'volume',
+      // 1 to 10
+      input: {
+        name: 'input',
         type: AMP_COMPONENT_TYPE.VOLUME,
         settingsList: [
           {
             name: 'level',
-            value: 3,
-            type: AMP_SETTING_TYPE.KNOB,
+            value: 1,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
           },
         ],
       },
+      // No knob for this input gain set to 1
       inputGain: {
         name: 'inputGain',
         type: AMP_COMPONENT_TYPE.VOLUME,
         settingsList: [
           {
             name: 'level',
-            value: 3,
+            value: 1,
             type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
           },
         ],
       },
@@ -101,6 +112,11 @@ export const AMP_TYPES_SCHEMAS = {
             value: 1,
             type: AMP_SETTING_TYPE.INTERNAL,
           },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
         ],
       },
       distortionStage1: {
@@ -113,9 +129,15 @@ export const AMP_TYPES_SCHEMAS = {
             type: AMP_SETTING_TYPE.SELECT,
           },
           {
+            // 0 to 10
             name: 'intensity',
             value: 8,
             type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
           },
         ],
       },
@@ -125,7 +147,7 @@ export const AMP_TYPES_SCHEMAS = {
         settingsList: [
           {
             name: 'frequency',
-            value: 0,
+            value: 6,
             type: AMP_SETTING_TYPE.INTERNAL,
           },
           {
@@ -160,8 +182,14 @@ export const AMP_TYPES_SCHEMAS = {
             value: 1,
             type: AMP_SETTING_TYPE.INTERNAL,
           },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
         ],
       },
+      // esta no tiene curve_length MAL
       distortionStage2: {
         name: 'distortionStage2',
         type: AMP_COMPONENT_TYPE.DISTORTION,
@@ -175,17 +203,34 @@ export const AMP_TYPES_SCHEMAS = {
             name: 'intensity',
             value: 8,
             type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
           },
         ],
       },
+      // This is the VOLUME knob
+      // 0 to 1
       outputGain: {
         name: 'outputGain',
         type: AMP_COMPONENT_TYPE.VOLUME,
         settingsList: [
           {
             name: 'level',
-            value: 7,
+            value: 0.5,
             type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val / 10,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
           },
         ],
       },
@@ -194,30 +239,51 @@ export const AMP_TYPES_SCHEMAS = {
         type: AMP_COMPONENT_TYPE.EQUALIZER,
         settingsList: [
           {
+            // (value-10) * 10 |    -100 to 0;
             name: 'trebbleGain',
             value: 4,
             type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: -100,
+              max: 0,
+            },
           },
           {
+            // (value-5) * 4 -20 to 20 when 1-10
             name: 'middleGain',
             value: 8.2,
             type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
           },
           {
+            // (value-10) * 7 -70 to 0 when 1-10
             name: 'bassGain',
             value: 8.2,
             type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
           },
         ],
       },
+      // -10 to 10 --- (value-5) * 2 when 1-10
       presence: {
         name: 'presence',
         type: AMP_COMPONENT_TYPE.PRESENCE,
         settingsList: [
           {
             name: 'gain',
-            value: 4,
+            value: 6.9,
             type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
+            normalize: (val)=> (val - 5) * 2,
           },
         ],
       },
@@ -253,14 +319,20 @@ export const AMP_TYPES_SCHEMAS = {
           },
         ],
       },
+      // This is the master volume knob 0 to 10
       master: {
         name: 'master',
         type: AMP_COMPONENT_TYPE.VOLUME,
         settingsList: [
           {
             name: 'level',
-            value: 2,
+            value: 5,
             type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
           },
           {
             name: 'mute',
@@ -269,19 +341,41 @@ export const AMP_TYPES_SCHEMAS = {
           },
         ],
       },
-      cabinet: {
-        name: 'cabinet',
-        type: AMP_COMPONENT_TYPE.CABINET,
+      // cabinet: {
+      //   name: 'cabinet',
+      //   type: AMP_COMPONENT_TYPE.CABINET,
+      //   settingsList: [
+      //     {
+      //       name: 'cabinetImpulse',
+      //       value: 'Marshall 1960, axis',
+      //       type: AMP_SETTING_TYPE.CABINET,
+      //     },
+      //     {
+      //       name: 'gain',
+      //       value: 9.4,
+      //       type: AMP_SETTING_TYPE.INTERNAL,
+      //     },
+      //   ],
+      // },
+      // 0 to 1
+      output: {
+        name: 'output',
+        type: AMP_COMPONENT_TYPE.VOLUME,
         settingsList: [
           {
-            name: 'cabinetImpulse',
-            value: 'Marshall 1960, axis',
-            type: AMP_SETTING_TYPE.CABINET,
+            name: 'level',
+            value: 0.5,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val / 10,
           },
           {
-            name: 'gain',
-            value: 9.4,
-            type: AMP_SETTING_TYPE.INTERNAL,
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
           },
         ],
       },
