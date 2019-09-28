@@ -32,7 +32,6 @@ export default class Distortion extends SingleAudioNode {
     // end of logarithmic adjustment
 
     this._intensity = Math.exp(minv + scale * (value - minp));
-
     this.node.curve = getDistortionTypeGenerateFunction(this.distortionType)(this._intensity);
   }
 

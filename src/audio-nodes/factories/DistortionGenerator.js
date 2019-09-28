@@ -52,12 +52,11 @@ const getDistortionTypeGenerateFunction = (type)=> {
       return curve;
     },
     // amount not relevant, asymetric fixed curve, helpful to generate ODD harmonics
-    [DISTORTION_TYPES.ASYMETRIC]: (intens)=> {
-      let intensity = intens / 1500;
+    [DISTORTION_TYPES.ASYMETRIC]: ()=> {
       let curve = new Float32Array(44100);
-
-      for (let i = 0; i < intensity; i++) {
-        let x = i * 2 / intensity - 1;
+      const amount = 44100;
+      for (let i = 0; i < amount; i++) {
+        let x = i * 2 / amount - 1;
         if (x < -0.08905) {
           curve[i] = (-3 / 4) * (1 - (Math.pow((1 - (Math.abs(x) - 0.032857)), 12)) + (1 / 3) * (Math.abs(x) - 0.032847)) + 0.01;
         } else if (x >= -0.08905 && x < 0.320018) {
@@ -74,8 +73,8 @@ const getDistortionTypeGenerateFunction = (type)=> {
       const amount = 22050;
       const curve = new Float32Array(amount);
 
-      for (let d = 0; 22050 > d; d += 1) {
-        let f = 2 * d / 22050 - 1;
+      for (let d = 0; amount > d; d += 1) {
+        let f = 2 * d / amount - 1;
         curve[d] = (1 + intensity) * f / (1 + intensity * Math.abs(f));
       }
       return curve;

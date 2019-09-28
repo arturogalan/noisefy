@@ -46,7 +46,15 @@ const validateValues = function(value, range, effectName) {
     throw Error(`The value ${value} setted for the effect ${effectName} is wrong, must be in range: ${range}`);
   }
 };
+const convertToMono = (audioContext, input)=> {
+  let splitter = audioContext.createChannelSplitter(2);
+  let merger = audioContext.createChannelMerger(2);
 
+  input.connect(splitter);
+  splitter.connect(merger, 0, 0);
+  splitter.connect(merger, 0, 1);
+  return merger;
+};
 export {
   hasGetUserMedia,
   getUserMedia,
@@ -54,4 +62,5 @@ export {
   deviceList,
   deviceListHandler,
   validateValues,
+  convertToMono,
 };
