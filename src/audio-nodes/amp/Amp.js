@@ -1,22 +1,11 @@
-import {AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_SETTING_NAME, AMP_COMPONENT_TYPE} from '../factories/AmpGenerator';
+import {AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_COMPONENT_TYPE, AMP_SETTING_NAME} from '../factories/AmpGenerator';
+import {DISTORTION_TYPES} from '../factories/DistortionGenerator';
 import * as Noisefy from '../../index';
 import MultiEffectNode from '../MultiEffectNode';
 
 const capitalize = function(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-const iterateObjectProps = (objectToIterate, funcToApply, funcToFilter)=> {
-  let index = 0;
-  const keys = Object.keys(objectToIterate);
-  for (const prop in objectToIterate) {
-    const propObject = objectToIterate[prop];
-    if (!funcToFilter || funcToFilter(propObject)) {
-      funcToApply(propObject, index, keys);
-    }
-    index++;
-  }
-};
-
 export default class Amp extends MultiEffectNode {
   constructor(audioContext, ampTypeRequested) {
     super(audioContext);
@@ -73,10 +62,9 @@ export default class Amp extends MultiEffectNode {
     console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
   }
   // Retrieve all the settings of type Knob of all the components of the amp, grouped by component
-  getKnobComponentsSettings() {
+  getKnobTypeComponents() {
     const componentNames = [];
-    for (const componentKey in AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS) {
-      const component = AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS[componentKey];
+    Object.values(AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS).forEach((component)=> {
       const settingsNames = component.settingsList.filter((setting)=> setting.type === AMP_SETTING_TYPE.KNOB);
       if (settingsNames.length) {
         componentNames.push({
@@ -84,16 +72,19 @@ export default class Amp extends MultiEffectNode {
           knobSettingList: settingsNames,
         });
       }
-    }
+    });
     return componentNames;
   }
+  getSelectedDistortions() {
+    const distoTypesComponentNames = Object.values(AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS).filter((comp)=> comp.type === AMP_COMPONENT_TYPE.DISTORTION);
+    const selectedDistos = [];
+    distoTypesComponentNames.forEach((comp)=> selectedDistos.push({
+      componentName: comp.name,
+      distortionType: this._components[comp.name][AMP_SETTING_NAME.DISTORTION_TYPE],
+    }));
+    return selectedDistos;
+  }
   getDistortionTypes() {
-    const result = {};
-    const funcToFilter = (component)=> component.type === AMP_COMPONENT_TYPE.DISTORTION;
-    const funcToApply = (component)=> result[component.name] = component.settingsList.find((setting)=> setting.name === AMP_SETTING_NAME.DISTORTION_TYPE);
-    iterateObjectProps(this._components, funcToApply, funcToFilter);
-    iterateObjectProps(result, (distorion)=> console.log(`found distortionType: ${distorion}`));
-    return result;
+    return Object.values(DISTORTION_TYPES);
   }
 }
-
