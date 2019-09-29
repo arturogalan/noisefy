@@ -1,15 +1,13 @@
 import MultiAudioNode from '../MultiAudioNode';
-// const irf = require('file!../../assets/impulses/reverb/hall-reverb.ogg');
-// import irf from "../../assets/impulses/reverb/cardiod-rear-levelled.wav";
-
-const irf = '/assets/impulses/reverb/hall-reverb.ogg';
-
+const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
 
 const getInputResponseFile = function(file) {
   return fetch(file, {
     method: 'get',
   }).then((response)=> {
-    return response.arrayBuffer();
+    return response.clone().arrayBuffer();
+  }).catch((e)=> {
+    console.error('Error getting the file:', e);
   });
 };
 
@@ -51,6 +49,8 @@ export default class Reverb extends MultiAudioNode {
 
     // Set the default level to 1
     this.level = 1;
+
+    this.responseFile = irf;
   }
 
   set responseFile(file) {
@@ -124,6 +124,8 @@ export default class Reverb extends MultiAudioNode {
 
       // Set the buffer gain-node value
       this.nodes.convolverNode.buffer = this._buffer;
+    }, (error)=> {
+      console.error('Error decoding file:', error);
     });
   }
 }

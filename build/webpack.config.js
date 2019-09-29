@@ -4,6 +4,7 @@
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 const pkg = require('./package.json');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 let libraryName = pkg.name;
 
@@ -73,7 +74,17 @@ const config = {
   resolve: {
     modules: [path.resolve('./node_modules'), path.resolve('./src/**')],
     extensions: ['.json', '.js']
-  }
+  },
+  // plugins: [
+  //   // copy custom static assets
+  //   new CopyWebpackPlugin([
+  //     {
+  //       from: path.resolve(__dirname, './assets'),
+  //       to: 'assets',
+  //       ignore: ['.*'],
+  //     },
+  //   ]),
+  // ]
 };
 
 module.exports = config;

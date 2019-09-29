@@ -119,6 +119,8 @@ export const AMP_TYPES_SCHEMAS = {
           },
         ],
       },
+      // As this disto is asymetric and intensity is not relevant, at this moment
+      // we define it as internal maybe in a future we should let the user change this disto type
       distortionStage1: {
         name: 'distortionStage1',
         type: AMP_COMPONENT_TYPE.DISTORTION,
@@ -126,13 +128,15 @@ export const AMP_TYPES_SCHEMAS = {
           {
             name: 'distortionType',
             value: 'asymetric',
-            type: AMP_SETTING_TYPE.SELECT,
+            // type: AMP_SETTING_TYPE.SELECT,
+            type: AMP_SETTING_TYPE.INTERNAL,
           },
           {
             // 0 to 10
             name: 'intensity',
             value: 8,
-            type: AMP_SETTING_TYPE.KNOB,
+            // type: AMP_SETTING_TYPE.KNOB,
+            type: AMP_SETTING_TYPE.INTERNAL,
             range: {
               min: 0,
               max: 10,
@@ -196,12 +200,12 @@ export const AMP_TYPES_SCHEMAS = {
         settingsList: [
           {
             name: 'distortionType',
-            value: 'notSoDistorted',
+            value: 'highGain',
             type: AMP_SETTING_TYPE.SELECT,
           },
           {
             name: 'intensity',
-            value: 8,
+            value: 3,
             type: AMP_SETTING_TYPE.KNOB,
             range: {
               min: 0,
@@ -239,13 +243,13 @@ export const AMP_TYPES_SCHEMAS = {
         type: AMP_COMPONENT_TYPE.EQUALIZER,
         settingsList: [
           {
-            // (value-10) * 10 |    -100 to 0;
-            name: 'trebbleGain',
-            value: 4,
+            // (value-10) * 7 -70 to 0 when 1-10
+            name: 'bassGain',
+            value: 8.2,
             type: AMP_SETTING_TYPE.KNOB,
             range: {
-              min: -100,
-              max: 0,
+              min: 1,
+              max: 10,
             },
           },
           {
@@ -259,13 +263,13 @@ export const AMP_TYPES_SCHEMAS = {
             },
           },
           {
-            // (value-10) * 7 -70 to 0 when 1-10
-            name: 'bassGain',
-            value: 8.2,
+            // (value-10) * 10 |    -100 to 0;
+            name: 'trebbleGain',
+            value: 4,
             type: AMP_SETTING_TYPE.KNOB,
             range: {
-              min: 1,
-              max: 10,
+              min: -100,
+              max: 0,
             },
           },
         ],
@@ -326,7 +330,7 @@ export const AMP_TYPES_SCHEMAS = {
         settingsList: [
           {
             name: 'level',
-            value: 5,
+            value: 3,
             type: AMP_SETTING_TYPE.KNOB,
             range: {
               min: 0,

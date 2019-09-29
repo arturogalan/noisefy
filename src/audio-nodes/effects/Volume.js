@@ -52,7 +52,7 @@ export default class Volume extends SingleAudioNode {
     this._mute = !!mute;
     if (this._mute) {
       // Keep track of the volume before muting
-      this._levelBeforeMute = this.level;
+      if (this.level > 0) this._levelBeforeMute = this.level;
       // Set the volume to 0
       this.level = 0;
     } else {
