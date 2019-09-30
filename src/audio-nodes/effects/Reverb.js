@@ -20,7 +20,7 @@ export default class Reverb extends MultiAudioNode {
   // _level;
   // _buffer;
 
-  constructor(audioContext, buffer) {
+  constructor(audioContext) {
     super(audioContext);
 
     this.nodes = {
@@ -55,7 +55,7 @@ export default class Reverb extends MultiAudioNode {
 
   set responseFile(file) {
     // TODO Get the file from mapping constants
-    getInputResponseFile(irf).then((buffer)=> {
+    getInputResponseFile(file).then((buffer)=> {
       if (!this.buffer) {
         this.buffer = buffer;
       }

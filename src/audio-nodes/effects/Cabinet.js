@@ -1,30 +1,39 @@
 import MultiAudioNode from '../MultiAudioNode';
-const irf = './src/assets/impulses/cabinet/marshall-4_impact.wav';
+import {CABINET_TYPES} from '../factories/CabinetGenerator';
+const irfRequiredFiles = {};
+Object.keys(CABINET_TYPES).forEach((cabinetImpulseKey)=> {
+  irfRequiredFiles[cabinetImpulseKey] = {
+    name: cabinetImpulseKey,
+    fileUrl: require(`../../assets/impulses/cabinet/${CABINET_TYPES[cabinetImpulseKey]}`),
+  };
+});
 
 const getInputResponseFile = function(file) {
   return fetch(file, {
     method: 'get',
   }).then((response)=> {
-    return response.arrayBuffer();
+    return response.clone().arrayBuffer();
+  }).catch((e)=> {
+    console.error('Error getting the file:', e);
   });
 };
 
 /**
- * The audio-effects cabinet class.
- * This class lets you add a cabinet effect.
+ * The audio-effects reverb class.
+ * This class lets you add a reverb effect.
  */
 export default class Cabinet extends MultiAudioNode {
   // _wet;
   // _level;
   // _buffer;
 
-  constructor(audioContext, buffer) {
+  constructor(audioContext, requiredCabinetType) {
     super(audioContext);
 
     this.nodes = {
       inputGainNode: audioContext.createGain(), // Create the input and output gain-node
       outputGainNode: audioContext.createGain(),
-      convolverNode: audioContext.createConvolver(), // Create the convolver node to create the cabinet effect
+      convolverNode: audioContext.createConvolver(), // Create the convolver node to create the reverb effect
       wetGainNode: audioContext.createGain(), // Create the wetness controll gain-node
       levelGainNode: audioContext.createGain(), // Create the level controll gain-node
     };
@@ -43,23 +52,37 @@ export default class Cabinet extends MultiAudioNode {
     this.output = this.nodes.outputGainNode;
 
     // Set the default wetness to 0.5
-    this.wet = 0.5;
+    this.wet = 0.30901699437494745;
 
     // Set the default level to 1
-    this.level = 1;
+    this.level = 0.9510565162951535;
+
+    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.MARSHALL_1960).fileUrl;
+    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.MARSHALL_1960).name;
+  //   function setGain(value) {
+  //     var v1 = Math.cos(value * Math.PI / 2);
+  //     var v2 = Math.cos((1 - value) * Math.PI / 2);
+  //     directGain.gain.value = v1;
+  //     convolverGain.gain.value = v2;
+  // }
   }
 
   set responseFile(file) {
-    // TODO Get the file from mapping constants
-    getInputResponseFile(irf).then((buffer)=> {
-      if (!this.buffer) {
-        this.buffer = buffer;
-      }
+    getInputResponseFile(file).then((buffer)=> {
+      this.buffer = buffer;
     }).catch((e)=> {
       console.error('Error processing file:', e);
     });
   }
 
+  get cabinetImpulse() {
+    return this._cabinetImpulse;
+  }
+
+  set cabinetImpulse(requiredCabinetType) {
+    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.MARSHALL_1960).fileUrl;
+    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.MARSHALL_1960).name;
+  }
 
   /**
    * Getter for the effect's wetness
@@ -120,6 +143,8 @@ export default class Cabinet extends MultiAudioNode {
 
       // Set the buffer gain-node value
       this.nodes.convolverNode.buffer = this._buffer;
+    }, (error)=> {
+      console.error('Error decoding file:', error);
     });
   }
 }

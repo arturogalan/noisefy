@@ -1,3 +1,6 @@
+import {CABINET_TYPES} from './CabinetGenerator';
+
+
 // Here we define the different amp types and their schematics and cabinets, or cabinets shold be another generator?
 // with some initials values.
 export const AMP_SETTING_TYPE = {
@@ -9,6 +12,7 @@ export const AMP_SETTING_TYPE = {
 };
 export const AMP_SETTING_NAME = {
   DISTORTION_TYPE: 'distortionType',
+  CABINET_IMPULSE: 'cabinetImpulse',
 };
 // effect/node type of each component -> one of effects folder
 export const AMP_COMPONENT_TYPE = {
@@ -24,6 +28,7 @@ export const AMP_COMPONENT_TYPE = {
 // name of the component
 // This order is the order the components appear in the amp header
 export const AMP_COMPONENT_NAME = {
+  CABINET: 'cabinet',
   DISTORTION: 'distortion', //input?
   EQUALIZER: 'equalizer',
   PRESENCE: 'presence',
@@ -345,22 +350,27 @@ export const AMP_TYPES_SCHEMAS = {
           },
         ],
       },
-      // cabinet: {
-      //   name: 'cabinet',
-      //   type: AMP_COMPONENT_TYPE.CABINET,
-      //   settingsList: [
-      //     {
-      //       name: 'cabinetImpulse',
-      //       value: 'Marshall 1960, axis',
-      //       type: AMP_SETTING_TYPE.CABINET,
-      //     },
-      //     {
-      //       name: 'gain',
-      //       value: 9.4,
-      //       type: AMP_SETTING_TYPE.INTERNAL,
-      //     },
-      //   ],
-      // },
+      [AMP_COMPONENT_NAME.CABINET]: {
+        name: AMP_COMPONENT_NAME.CABINET,
+        type: AMP_COMPONENT_TYPE.CABINET,
+        settingsList: [
+          {
+            name: 'cabinetImpulse',
+            value: CABINET_TYPES.MARSHALL_1960,
+            type: AMP_SETTING_TYPE.CABINET,
+          },
+          {
+            name: 'level',
+            value: 0.9510565162951535,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'wet',
+            value: 0.30901699437494745,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
       // 0 to 1
       output: {
         name: 'output',

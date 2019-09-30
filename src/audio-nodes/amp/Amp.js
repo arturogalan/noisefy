@@ -1,5 +1,6 @@
-import {AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_COMPONENT_TYPE, AMP_SETTING_NAME} from '../factories/AmpGenerator';
+import {AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_COMPONENT_NAME, AMP_COMPONENT_TYPE, AMP_SETTING_NAME} from '../factories/AmpGenerator';
 import {DISTORTION_TYPES} from '../factories/DistortionGenerator';
+import {CABINET_TYPES} from '../factories/CabinetGenerator';
 import * as Noisefy from '../../index';
 import MultiEffectNode from '../MultiEffectNode';
 
@@ -86,5 +87,11 @@ export default class Amp extends MultiEffectNode {
   }
   getDistortionTypes() {
     return Object.values(DISTORTION_TYPES);
+  }
+  getSelectedCabinet() {
+    return this._components[AMP_COMPONENT_NAME.CABINET][AMP_SETTING_NAME.CABINET_IMPULSE];
+  }
+  getCabinetTypes() {
+    return Object.keys(CABINET_TYPES);
   }
 }
