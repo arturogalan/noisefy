@@ -1,5 +1,5 @@
 import SingleAudioNode from '../SingleAudioNode';
-import {validateValues} from '../../Util';
+import {validateValues} from '../../util';
 import {DISTORTION_TYPES, getDistortionTypeGenerateFunction} from '../factories/DistortionGenerator';
 /**
  * The audio-effects distortion class.
@@ -32,6 +32,7 @@ export default class Distortion extends SingleAudioNode {
     // end of logarithmic adjustment
 
     this._intensity = Math.exp(minv + scale * (value - minp));
+    console.log('setting', this.distortionType, 'intensity', this._intensity);
     this.node.curve = getDistortionTypeGenerateFunction(this.distortionType)(this._intensity);
   }
 

@@ -49,7 +49,7 @@ export const AMP_TYPES_SCHEMAS = {
           {
             name: 'level',
             value: 1,
-            type: AMP_SETTING_TYPE.INTERNAL,
+            type: AMP_SETTING_TYPE.KNOB,
           },
           {
             name: 'mute',
@@ -140,8 +140,8 @@ export const AMP_TYPES_SCHEMAS = {
             // 0 to 10
             name: 'intensity',
             value: 8,
-            // type: AMP_SETTING_TYPE.KNOB,
-            type: AMP_SETTING_TYPE.INTERNAL,
+            type: AMP_SETTING_TYPE.KNOB,
+            // type: AMP_SETTING_TYPE.INTERNAL,
             range: {
               min: 0,
               max: 10,

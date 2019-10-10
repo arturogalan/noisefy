@@ -1,7 +1,7 @@
 
 import SingleAudioNode from '../SingleAudioNode';
 import MultiAudioNode from '../MultiAudioNode';
-import {hasGetUserMedia, convertToMono} from '../../Util';
+import {hasGetUserMedia, convertToMono} from '../../util';
 
 export default class Input extends SingleAudioNode {
   constructor(audioContext, mono = true) {

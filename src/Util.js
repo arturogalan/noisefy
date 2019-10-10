@@ -55,7 +55,15 @@ const convertToMono = (audioContext, input)=> {
   splitter.connect(merger, 0, 1);
   return merger;
 };
+const normalize = (max, value)=> {
+  debugger;
+  // The input of every effect is 0 to 10 based, helper to normalize
+  const base = 10;
+  console.log('setted: ', (max * value)/base);
+  return (max * value)/base;
+};
 export {
+  normalize,
   hasGetUserMedia,
   getUserMedia,
   hasAudioContext,

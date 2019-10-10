@@ -14,7 +14,7 @@ import LowshelfFilter from './audio-nodes/effects/LowshelfFilter';
 import PeakingFilter from './audio-nodes/effects/PeakingFilter';
 import HighpassFilter from './audio-nodes/effects/HighpassFilter';
 
-import {hasAudioContext, hasGetUserMedia, deviceList, deviceListHandler} from './Util';
+import {hasAudioContext, hasGetUserMedia, deviceList, deviceListHandler} from './util';
 import Distortion from './audio-nodes/effects/Distortion';
 import {DISTORTION_TYPES} from './audio-nodes/factories/DistortionGenerator';
 import Amp from './audio-nodes/amp/Amp';

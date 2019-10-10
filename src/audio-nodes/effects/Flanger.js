@@ -1,4 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
+import {normalize} from '../../util';
 
 /**
  * The audio-effects flanger class.
@@ -67,8 +68,8 @@ export default class Flanger extends MultiAudioNode {
    * @param  {number} delay
    */
   set delay(delay) {
-    // Set the internal delay value
-    this._delay = parseFloat(delay);
+    // Set the internal delay value 0.001 to 0.02
+    this._delay = parseFloat(normalize(0.02, delay));
 
     // Set the new value for the delay-node
     this.nodes.delayNode.delayTime.value = this._delay;
@@ -88,7 +89,7 @@ export default class Flanger extends MultiAudioNode {
    */
   set depth(depth) {
     // Set the internal depth value
-    this._depth = parseFloat(depth);
+    this._depth = parseFloat(normalize(0.02, depth));
 
     // Set the gain value of the gain-node
     this.nodes.gainNode.gain.value = this._depth;
@@ -107,8 +108,8 @@ export default class Flanger extends MultiAudioNode {
    * @param  {number} feedback
    */
   set feedback(feedback) {
-    // Set the internal feedback value
-    this._feedback = parseFloat(feedback);
+    // Set the internal feedback value 0 to 1
+    this._feedback = parseFloat(normalize(1, feedback));
 
     // Set the feedback gain-node value
     this.nodes.feedbackGainNode.gain.value = this._feedback;
@@ -128,7 +129,7 @@ export default class Flanger extends MultiAudioNode {
    */
   set speed(speed) {
     // Set the internal speed value
-    this._speed = parseFloat(speed);
+    this._speed = parseFloat(normalize(1, speed));
 
     // Set the speed gain-node value
     this.nodes.oscillatorNode.frequency.value = this._speed;

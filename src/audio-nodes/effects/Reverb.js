@@ -1,4 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
+import {normalize} from '../../util';
 const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
 
 const getInputResponseFile = function(file) {
@@ -99,7 +100,7 @@ export default class Reverb extends MultiAudioNode {
    */
   set level(level) {
     // Set the internal level value
-    this._level = parseFloat(level);
+    this._level = parseFloat(normalize(1, level));
 
     // Set the delayTime value of the delay-node
     this.nodes.levelGainNode.gain.value = this._level;
