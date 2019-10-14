@@ -7,6 +7,20 @@ import MultiEffectNode from '../MultiEffectNode';
 const capitalize = function(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+const filterComponentSettingsByType = function(requestedAmpType, requestedType) {
+  const componentNames = [];
+  Object.values(AMP_TYPES_SCHEMAS[requestedAmpType].COMPONENTS).forEach((component)=> {
+    const settingsNames = component.settingsList.filter((setting)=> setting.type === requestedType);
+    if (settingsNames.length) {
+      componentNames.push({
+        name: component.name,
+        settingList: settingsNames,
+      });
+    }
+  });
+  return componentNames;
+};
+
 export default class Amp extends MultiEffectNode {
   constructor(audioContext, ampTypeRequested) {
     super(audioContext);
@@ -62,19 +76,15 @@ export default class Amp extends MultiEffectNode {
     component[componentProperty] = normalize(value);
     console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
   }
+  getInputComponent() {
+    return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.INPUT);
+  }
+  getOutputComponent() {
+    return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.OUTPUT);
+  }
   // Retrieve all the settings of type Knob of all the components of the amp, grouped by component
   getKnobTypeComponents() {
-    const componentNames = [];
-    Object.values(AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS).forEach((component)=> {
-      const settingsNames = component.settingsList.filter((setting)=> setting.type === AMP_SETTING_TYPE.KNOB);
-      if (settingsNames.length) {
-        componentNames.push({
-          name: component.name,
-          knobSettingList: settingsNames,
-        });
-      }
-    });
-    return componentNames;
+    return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.KNOB);
   }
   getSelectedDistortions() {
     const distoTypesComponentNames = Object.values(AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS).filter((comp)=> comp.type === AMP_COMPONENT_TYPE.DISTORTION);

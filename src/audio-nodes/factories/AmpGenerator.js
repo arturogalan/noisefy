@@ -4,6 +4,8 @@ import {CABINET_TYPES} from './CabinetGenerator';
 // Here we define the different amp types and their schematics and cabinets, or cabinets shold be another generator?
 // with some initials values.
 export const AMP_SETTING_TYPE = {
+  INPUT: 'input',
+  OUTPUT: 'output',
   KNOB: 'knob',
   INTERNAL: 'internal',
   BOOLEAN: 'boolean',
@@ -49,7 +51,7 @@ export const AMP_TYPES_SCHEMAS = {
           {
             name: 'level',
             value: 1,
-            type: AMP_SETTING_TYPE.KNOB,
+            type: AMP_SETTING_TYPE.INPUT,
           },
           {
             name: 'mute',
@@ -379,7 +381,7 @@ export const AMP_TYPES_SCHEMAS = {
           {
             name: 'level',
             value: 0.5,
-            type: AMP_SETTING_TYPE.KNOB,
+            type: AMP_SETTING_TYPE.OUTPUT,
             range: {
               min: 0,
               max: 10,
