@@ -56,7 +56,6 @@ const convertToMono = (audioContext, input)=> {
   return merger;
 };
 const normalize = (max, value)=> {
-  debugger;
   // The input of every effect is 0 to 10 based, helper to normalize
   const base = 10;
   console.log('setted: ', (max * value)/base);
