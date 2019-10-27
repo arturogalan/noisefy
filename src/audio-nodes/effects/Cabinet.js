@@ -52,13 +52,16 @@ export default class Cabinet extends MultiAudioNode {
     this.output = this.nodes.outputGainNode;
 
     // Set the default wetness to 0.5
-    this.wet = 0.30901699437494745;
+    // this.wet = 0.30901699437494745;
+    this.wet = 0.3;
+
 
     // Set the default level to 1
-    this.level = 0.9510565162951535;
+    // this.level = 0.9510565162951535;
+    this.level = 0.9;
 
-    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.MARSHALL_1960).fileUrl;
-    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.MARSHALL_1960).name;
+    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).fileUrl;
+    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).name;
   //   function setGain(value) {
   //     var v1 = Math.cos(value * Math.PI / 2);
   //     var v2 = Math.cos((1 - value) * Math.PI / 2);
@@ -80,8 +83,8 @@ export default class Cabinet extends MultiAudioNode {
   }
 
   set cabinetImpulse(requiredCabinetType) {
-    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.MARSHALL_1960).fileUrl;
-    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.MARSHALL_1960).name;
+    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).fileUrl;
+    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).name;
   }
 
   /**
@@ -146,5 +149,12 @@ export default class Cabinet extends MultiAudioNode {
     }, (error)=> {
       console.error('Error decoding file:', error);
     });
+  }
+
+  set gain(value) {
+    const wetValue = Math.cos(value * Math.PI / 2);
+    const levelValue = Math.cos((1 - value) * Math.PI / 2);
+    this.wet = wetValue;
+    this.level = levelValue;
   }
 }

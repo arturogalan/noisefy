@@ -1,8 +1,8 @@
 const CABINET_TYPES = {
-  MARSHALL_1960: 'Marshall1960.wav',
-  MARSHALL_4: 'Marshall4.wav',
-  VOX: 'VoxM930O.wav',
-  FENFER_CHAMP_AXIS: 'FenderChampAxisStereo.wav',
+  WARSHALL_1: 'Marshall1960.wav',
+  WHARSHALL_2: 'Marshall4.wav',
+  V0X: 'VoxM930O.wav',
+  BENDER: 'FenderChampAxisStereo.wav',
 };
 
 export {

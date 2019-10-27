@@ -1,83 +1,242 @@
+import {AMP_COMPONENT_NAME, AMP_TYPES} from './AmpGenerator';
+import {CABINET_TYPES} from './CabinetGenerator';
 
-// this presets should map with an amp type and set every values of the amp schematics, internals and knob types 
-const PRESET_TYPES = {
-  HARD_ROCK_1: {
-    'name': 'Hard Rock classic 1',
-    'boost': false,
-    // OG volume knob
-    'outputGain': 7.0,
-    // MV master knob
-    'masterVolume': 7.2,
-    // 'BF'
-    'bassFilter': 8.2,
-    // 'MF'
-    'middleFilter': 8.2,
-    // 'TF'
-    'trebleFilter': 3.8,
-    // 'PF'
-    'presenceFilter': 6.9,
-    // STAGE1 - disto 1 ODD harmonics
-    'stage1': {
-      'lowShelf1':
-      {
-        // 'LS1Freq'
-        'frequency': 720,
-        // 'LS1Gain'
-        'gain': -6,
-      },
-      'lowShelf2':
-      {
-        // 'LS2Freq'
-        'frequency': 320,
-        // 'LS2Gain'
-        'gain': -5,
-      },
-      //  gain1
-      'preampGain': 1,
-      // 'distoName'
-      'distortionType': 'asymetric',
-      // K1
-      'intensity': '7.8',
-      'hiPass1':
-      {
-        // 'LS2Freq'
-        'frequency': 0,
-        // 'LS2Gain'
-        'Qvalue': 0.7071,
+
+export const PRESET_TYPES = {
+  HARD_ROCK: 'HARD_ROCK',
+};
+
+export const AMP_TYPES_PRESETS = {
+  [AMP_TYPES.WARSHALL]: {
+    [PRESET_TYPES.HARD_ROCK]: {
+      COMPONENTS: {
+        input: {
+          settingsList: [
+            {
+              name: 'level',
+              value: 1,
+            },
+            {
+              name: 'mute',
+              value: false,
+            },
+          ],
+        },
+        inputGain: {
+          settingsList: [
+            {
+              name: 'level',
+              value: 1,
+            },
+            {
+              name: 'mute',
+              value: false,
+            },
+          ],
+        },
+        lowShelf1: {
+          settingsList: [
+            {
+              name: 'gain',
+              value: -6,
+            },
+            {
+              name: 'frequency',
+              value: 720,
+            },
+          ],
+        },
+        lowShelf2: {
+          settingsList: [
+            {
+              name: 'gain',
+              value: -5,
+            },
+            {
+              name: 'frequency',
+              value: 320,
+            },
+          ],
+        },
+        preampStage1: {
+          settingsList: [
+            {
+              name: 'level',
+              value: 1,
+            },
+            {
+              name: 'mute',
+              value: false,
+            },
+          ],
+        },
+        distortionStage1: {
+          settingsList: [
+            {
+              name: 'distortionType',
+              value: 'asymetric',
+            },
+            {
+              name: 'intensity',
+              value: 8,
+            },
+          ],
+        },
+        highPass1: {
+          settingsList: [
+            {
+              name: 'frequency',
+              value: 6,
+            },
+            {
+              name: 'QValue',
+              value: 0.7071,
+            },
+          ],
+        },
+        lowShelf3: {
+          settingsList: [
+            {
+              name: 'gain',
+              value: -6,
+            },
+            {
+              name: 'frequency',
+              value: 720,
+            },
+          ],
+        },
+        preampStage2: {
+          settingsList: [
+            {
+              name: 'level',
+              value: 1,
+            },
+            {
+              name: 'mute',
+              value: false,
+            },
+          ],
+        },
+        distortionStage2: {
+          settingsList: [
+            {
+              name: 'distortionType',
+              value: 'notSoDistorted',
+            },
+            {
+              name: 'intensity',
+              value: 7.8,
+            },
+          ],
+        },
+        outputGain: {
+          name: 'outputGain',
+          settingsList: [
+            {
+              name: 'level',
+              value: 7,
+            },
+            {
+              name: 'mute',
+              value: false,
+            },
+          ],
+        },
+        equalizer: {
+          settingsList: [
+            {
+              name: 'bassGain',
+              value: 8.2,
+            },
+            {
+              name: 'middleGain',
+              value: 8.2,
+            },
+            {
+              name: 'trebbleGain',
+              value: 4,
+            },
+          ],
+        },
+        presence: {
+          settingsList: [
+            {
+              name: 'gain',
+              value: 6.9,
+            },
+          ],
+        },
+        // eqLowCut: {
+        //   settingsList: [
+        //     {
+        //       name: 'gain',
+        //       value: -19,
+        //     },
+        //     {
+        //       name: 'frequency',
+        //       value: 60,
+        //     },
+        //   ],
+        // },
+        // eqHighCut: {
+        //   settingsList: [
+        //     {
+        //       name: 'gain',
+        //       value: -25,
+        //     },
+        //     {
+        //       name: 'frequency',
+        //       value: 10000,
+        //     },
+        //   ],
+        // },
+        // This is the master volume knob 0 to 10
+        master: {
+          settingsList: [
+            {
+              name: 'level',
+              value: 3,
+            },
+            {
+              name: 'mute',
+              value: false,
+            },
+          ],
+        },
+        [AMP_COMPONENT_NAME.CABINET]: {
+          settingsList: [
+            {
+              name: 'cabinetImpulse',
+              value: CABINET_TYPES.WARSHALL_1,
+            },
+            {
+              name: 'gain',
+              value: 9.4,
+            },
+            // {
+            //   name: 'level',
+            //   value: 0.9510565162951535,
+            // },
+            // {
+            //   name: 'wet',
+            //   value: 0.30901699437494745,
+            // },
+          ],
+        },
+        output: {
+          settingsList: [
+            {
+              name: 'level',
+              value: 0.5,
+            },
+            {
+              name: 'mute',
+              value: false,
+            },
+          ],
+        },
       },
     },
-    // STAGE2 - disto 2 EVEN harmonics
-    'stage2': {
-      // 'distoName'
-      'distortionType': 'notSoDistorted',
-      // 'K2'
-      'intensity': '7.8',
-      // gain2
-      'preampGain': 1,
-      'lowShelf1': {
-        // 'LS3Freq'
-        'frequency': 720,
-        // 'LS3Gain'
-        'gain': -6,
-      },
-    },
-    'room': {
-      // 'CN'
-      'cabinetImpulse': 'Marshall 1960, axis',
-      // 'CG'
-      'gain': '9.4',
-
-    },
-    // TODO hipass config?
-    // hipass??? it seems that doesn't change in setPreset function
-    // 'HP1Freq': 6,
-    // 'HP1Q': 0.707099974155426,
-
-    // NOT USED cause I don't have second equalizer and reverb is a pedal apart
-    // second equalizer
-    // 'EQ': [5, 11, -6, -10, 7, 2],
-    // reverb --
-    // 'RN': 'Fender Hot Rod',
-    // 'RG': '2.0',
   },
 };

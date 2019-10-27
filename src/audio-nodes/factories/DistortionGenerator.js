@@ -1,16 +1,37 @@
+
+const DISTORTION_PRESETS = [
+  {name: 'Hard Rock classic 1', distortionStage1: 'asymetric', distortionStage2: 'notSoDistorted'},
+  {name: 'Hard Rock classic 2', distortionStage1: 'standard', distortionStage2: 'notSoDistorted'},
+  {name: 'Hard Rock classic 3', distortionStage1: 'standardLow', distortionStage2: 'notSoDistorted'},
+  {name: 'High Gain 1', distortionStage1: 'asymetric', distortionStage2: 'highGain'},
+  {name: 'High Gain 2', distortionStage1: 'asymetric', distortionStage2: 'highGainModern'},
+  {name: 'Crunch', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
+  {name: 'Fuzz', distortionStage1: 'asymetric', distortionStage2: 'fuzz'},
+  {name: 'SuperFuzz', distortionStage1: 'asymetric', distortionStage2: 'superFuzz'},
+];
+
+const CLEAN_PRESETS = [
+  {name: 'Clean and Warm', distortionStage1: 'asymetric', distortionStage2: 'standard'},
+  {name: 'Clean no reverb', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
+  {name: 'Another Clean Sound', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
+  {name: 'Mostly even harmonics', distortionStage1: 'standard', distortionStage2: 'standard'},
+  {name: 'Strong and Warm', distortionStage1: 'asymetric', distortionStage2: 'superClean'},
+  {name: 'SuperClean/Jazz', distortionStage1: 'crunch', distortionStage2: 'crunch'},
+];
+
 const DISTORTION_TYPES = {
+  ASYMETRIC: 'asymetric',
   STANDARD: 'standard',
+  STANDARD_LOW: 'standardLow',
   HIGH_GAIN: 'highGain',
   HIGH_GAIN_MODERN: 'highGainModern',
-  ASYMETRIC: 'asymetric',
-  NOT_SO_DISTORTED: 'notSoDistorted',
-  SUPER_CLEAN: 'superClean',
   CLEAN: 'clean',
+  SUPER_CLEAN: 'superClean',
   SMOOTH: 'smooth',
+  NOT_SO_DISTORTED: 'notSoDistorted',
   FUZZ: 'fuzz',
   SUPERFUZZ: 'superFuzz',
   CRUNCH: 'crunch',
-  STANDARD_LOW: 'standardLow',
   BEZIER: 'bezier',
   CLASS_A: 'classA',
   VERTICAL: 'vertical',
@@ -26,6 +47,16 @@ const getDistortionTypeGenerateFunction = (type)=> {
       for (let i = 0; i < amount; ++i) {
         let x = i * 2 / amount - 1;
         curve[i] = (3 + intensity) * x * 57 * deg / (Math.PI + intensity * Math.abs(x));
+      }
+      return curve;
+    },
+    [DISTORTION_TYPES.STANDARD_LOW]: (intensity)=> {
+      let amount = 44100;
+      let curve = new Float32Array(amount);
+      let deg = Math.PI / 180;
+      for (let i = 0; i < amount; ++i) {
+        let x = i * 2 / amount - 1;
+        curve[i] = (3 + intensity) * x * 20 * deg / (Math.PI + intensity * Math.abs(x));
       }
       return curve;
     },
@@ -128,7 +159,7 @@ const getDistortionTypeGenerateFunction = (type)=> {
       let a = 1 - intensity;
       for (let i = 0; i < amount; i++) {
         let x = i * 2 / amount - 1;
-        let y = x < 0 ? -Math.pow(Math.abs(x), a + 0.04) : Math.pow(x, a);
+        let y = x < 0 ? - Math.pow(Math.abs(x), a + 0.04) : Math.pow(x, a);
         curve[i] = tanh(y * 2);
       }
       return curve;
@@ -150,16 +181,6 @@ const getDistortionTypeGenerateFunction = (type)=> {
       for (let d = 0; 22050 > d; d += 1) {
         let f = 2 * d / 22050 - 1;
         curve[d] = (1 + intensity) * f / (1 + intensity * Math.abs(f));
-      }
-      return curve;
-    },
-    [DISTORTION_TYPES.STANDARD_LOW]: (intens)=> {
-      let amount = 44100;
-      let curve = new Float32Array(amount);
-      let deg = Math.PI / 180;
-      for (let i = 0; i < amount; ++i) {
-        let x = i * 2 / amount - 1;
-        curve[i] = (3 + intens) * x * 20 * deg / (Math.PI + intens * Math.abs(x));
       }
       return curve;
     },
@@ -229,5 +250,7 @@ const bezier = (t, p0, p1, p2, p3)=> {
 
 export {
   DISTORTION_TYPES,
+  DISTORTION_PRESETS,
+  CLEAN_PRESETS,
   getDistortionTypeGenerateFunction,
 };

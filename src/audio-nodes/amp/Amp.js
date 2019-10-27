@@ -1,6 +1,7 @@
 import {AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_COMPONENT_NAME, AMP_COMPONENT_TYPE, AMP_SETTING_NAME} from '../factories/AmpGenerator';
 import {DISTORTION_TYPES} from '../factories/DistortionGenerator';
 import {CABINET_TYPES} from '../factories/CabinetGenerator';
+import {AMP_TYPES_PRESETS} from '../factories/PresetGenerator';
 import * as Noisefy from '../../index';
 import MultiEffectNode from '../MultiEffectNode';
 
@@ -19,6 +20,10 @@ const filterComponentSettingsByType = function(requestedAmpType, requestedType) 
     }
   });
   return componentNames;
+};
+const getComponentSettingsByName = function(requestedAmpType, requestedName) {
+  const component = Object.values(AMP_TYPES_SCHEMAS[requestedAmpType].COMPONENTS).find((c)=> c.name === requestedName);
+  return component.settingsList.map((setting)=> ({name: setting.name, value: setting.value, type: setting.type}));
 };
 
 export default class Amp extends MultiEffectNode {
@@ -76,10 +81,10 @@ export default class Amp extends MultiEffectNode {
     component[componentProperty] = normalize(value);
     console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
   }
-  getInputComponent() {
+  getInputGainComponent() {
     return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.INPUT);
   }
-  getOutputComponent() {
+  getOutputGainComponent() {
     return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.OUTPUT);
   }
   // Retrieve all the settings of type Knob of all the components of the amp, grouped by component
@@ -103,5 +108,18 @@ export default class Amp extends MultiEffectNode {
   }
   getCabinetTypes() {
     return Object.keys(CABINET_TYPES);
+  }
+  getCabinetSettings() {
+    console.log(getComponentSettingsByName(this._ampType, AMP_COMPONENT_NAME.CABINET));
+    return getComponentSettingsByName(this._ampType, AMP_COMPONENT_NAME.CABINET).filter((setting)=> setting.type === AMP_SETTING_TYPE.INTERNAL);
+  }
+  set preset(presetName) {
+    const presetComponents = AMP_TYPES_PRESETS[this._ampType][presetName].COMPONENTS;
+    Object.keys(presetComponents).forEach((component)=> {
+      presetComponents[component].settingsList.forEach((setting)=> {
+        console.log(component, setting);
+        this.setAmpComponentEffectProperty({componentName: component, componentProperty: setting.name, value: setting.value});
+      });
+    });
   }
 }

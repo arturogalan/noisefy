@@ -15,6 +15,8 @@ export const AMP_SETTING_TYPE = {
 export const AMP_SETTING_NAME = {
   DISTORTION_TYPE: 'distortionType',
   CABINET_IMPULSE: 'cabinetImpulse',
+  CABINET_WET: 'wet',
+  CABINET_GAIN: 'gain',
 };
 // effect/node type of each component -> one of effects folder
 export const AMP_COMPONENT_TYPE = {
@@ -52,6 +54,11 @@ export const AMP_TYPES_SCHEMAS = {
             name: 'level',
             value: 1,
             type: AMP_SETTING_TYPE.INPUT,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val / 10,
           },
           {
             name: 'mute',
@@ -358,18 +365,19 @@ export const AMP_TYPES_SCHEMAS = {
         settingsList: [
           {
             name: 'cabinetImpulse',
-            value: CABINET_TYPES.MARSHALL_1960,
+            value: CABINET_TYPES.WARSHALL_1,
             type: AMP_SETTING_TYPE.CABINET,
           },
           {
             name: 'level',
-            value: 0.9510565162951535,
+            value: 9,
             type: AMP_SETTING_TYPE.INTERNAL,
           },
           {
             name: 'wet',
-            value: 0.30901699437494745,
+            value: 3,
             type: AMP_SETTING_TYPE.INTERNAL,
+            normalize: (val)=> val / 10,
           },
         ],
       },
@@ -386,7 +394,7 @@ export const AMP_TYPES_SCHEMAS = {
               min: 0,
               max: 10,
             },
-            normalize: (val)=> val / 10,
+            normalize: (val)=> val / 100,
           },
           {
             name: 'mute',
@@ -398,41 +406,3 @@ export const AMP_TYPES_SCHEMAS = {
     },
   },
 };
-
-// Here we should develop the methods to create all the effects of the amp and connect them together
-
-
-// changeBoost(p.boost);
-
-// // stage 1
-// changeLowShelf1FrequencyValue(p.LS1Freq);
-// changeLowShelf1GainValue(p.LS1Gain);
-// changeLowShelf2FrequencyValue(p.LS2Freq);
-// changeLowShelf2GainValue(p.LS2Gain);
-// changePreampStage1GainValue(p.gain1);
-// changeDisto1TypeFromPreset(p.distoName1);
-// changeDistorsionValues(p.K1, 0);
-
-// // stage 2
-// changeLowShelf3FrequencyValue(p.LS3Freq);
-// changeLowShelf3GainValue(p.LS3Gain);
-// changePreampStage2GainValue(p.gain2);
-// changeDisto2TypeFromPreset(p.distoName2);
-// changeDistorsionValues(p.K2, 1);
-
-// changeOutputGain(p.OG);
-
-// changeBassFilterValue(p.BF);
-// changeMidFilterValue(p.MF);
-// changeTrebleFilterValue(p.TF);
-// changePresenceFilterValue(p.PF);
-
-// changeMasterVolume(p.MV);
-
-// changeReverbGain(p.RG);
-// changeReverbImpulse(p.RN);
-
-// changeRoom(p.CG);
-// changeCabinetSimImpulse(p.CN);
-
-// changeEQValues(p.EQ);
