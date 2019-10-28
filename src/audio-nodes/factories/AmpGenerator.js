@@ -40,7 +40,7 @@ export const AMP_COMPONENT_NAME = {
   MASTER: 'master', // ouput?
 };
 export const AMP_TYPES = {
-  WARSHALL: 'Wharsall',
+  WARSHALL: 'Warshall',
 };
 export const AMP_TYPES_SCHEMAS = {
   [AMP_TYPES.WARSHALL]: {
