@@ -6,8 +6,8 @@ const DISTORTION_PRESETS = [
   {name: 'High Gain 1', distortionStage1: 'asymetric', distortionStage2: 'highGain'},
   {name: 'High Gain 2', distortionStage1: 'asymetric', distortionStage2: 'highGainModern'},
   {name: 'Crunch', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
-  {name: 'Fuzz', distortionStage1: 'asymetric', distortionStage2: 'fuzz'},
-  {name: 'SuperFuzz', distortionStage1: 'asymetric', distortionStage2: 'superFuzz'},
+  {name: 'Fuzz 1', distortionStage1: 'asymetric', distortionStage2: 'fuzz'},
+  {name: 'Fuzz 2', distortionStage1: 'asymetric', distortionStage2: 'superFuzz'},
 ];
 
 const CLEAN_PRESETS = [
