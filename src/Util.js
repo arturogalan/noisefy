@@ -46,12 +46,28 @@ const validateValues = function(value, range, effectName) {
     throw Error(`The value ${value} setted for the effect ${effectName} is wrong, must be in range: ${range}`);
   }
 };
+const convertToMono = (audioContext, input)=> {
+  let splitter = audioContext.createChannelSplitter(2);
+  let merger = audioContext.createChannelMerger(2);
 
+  input.connect(splitter);
+  splitter.connect(merger, 0, 0);
+  splitter.connect(merger, 0, 1);
+  return merger;
+};
+const normalize = (max, value)=> {
+  // The input of every effect is 0 to 10 based, helper to normalize
+  const base = 10;
+  console.log('setted: ', (max * value)/base);
+  return (max * value)/base;
+};
 export {
+  normalize,
   hasGetUserMedia,
   getUserMedia,
   hasAudioContext,
   deviceList,
   deviceListHandler,
   validateValues,
+  convertToMono,
 };

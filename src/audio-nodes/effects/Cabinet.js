@@ -1,6 +1,12 @@
 import MultiAudioNode from '../MultiAudioNode';
-import {normalize} from '../../util';
-const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
+import {CABINET_TYPES} from '../factories/CabinetGenerator';
+const irfRequiredFiles = {};
+Object.keys(CABINET_TYPES).forEach((cabinetImpulseKey)=> {
+  irfRequiredFiles[cabinetImpulseKey] = {
+    name: cabinetImpulseKey,
+    fileUrl: require(`../../assets/impulses/cabinet/${CABINET_TYPES[cabinetImpulseKey]}`),
+  };
+});
 
 const getInputResponseFile = function(file) {
   return fetch(file, {
@@ -16,12 +22,12 @@ const getInputResponseFile = function(file) {
  * The audio-effects reverb class.
  * This class lets you add a reverb effect.
  */
-export default class Reverb extends MultiAudioNode {
+export default class Cabinet extends MultiAudioNode {
   // _wet;
   // _level;
   // _buffer;
 
-  constructor(audioContext) {
+  constructor(audioContext, requiredCabinetType) {
     super(audioContext);
 
     this.nodes = {
@@ -46,25 +52,40 @@ export default class Reverb extends MultiAudioNode {
     this.output = this.nodes.outputGainNode;
 
     // Set the default wetness to 0.5
-    this.wet = 0.5;
+    // this.wet = 0.30901699437494745;
+    this.wet = 0.3;
+
 
     // Set the default level to 1
-    this.level = 1;
+    // this.level = 0.9510565162951535;
+    this.level = 0.9;
 
-    this.responseFile = irf;
+    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).fileUrl;
+    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).name;
+  //   function setGain(value) {
+  //     var v1 = Math.cos(value * Math.PI / 2);
+  //     var v2 = Math.cos((1 - value) * Math.PI / 2);
+  //     directGain.gain.value = v1;
+  //     convolverGain.gain.value = v2;
+  // }
   }
 
   set responseFile(file) {
-    // TODO Get the file from mapping constants
     getInputResponseFile(file).then((buffer)=> {
-      if (!this.buffer) {
-        this.buffer = buffer;
-      }
+      this.buffer = buffer;
     }).catch((e)=> {
       console.error('Error processing file:', e);
     });
   }
 
+  get cabinetImpulse() {
+    return this._cabinetImpulse;
+  }
+
+  set cabinetImpulse(requiredCabinetType) {
+    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).fileUrl;
+    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).name;
+  }
 
   /**
    * Getter for the effect's wetness
@@ -100,7 +121,7 @@ export default class Reverb extends MultiAudioNode {
    */
   set level(level) {
     // Set the internal level value
-    this._level = parseFloat(normalize(1, level));
+    this._level = parseFloat(level);
 
     // Set the delayTime value of the delay-node
     this.nodes.levelGainNode.gain.value = this._level;
@@ -128,5 +149,12 @@ export default class Reverb extends MultiAudioNode {
     }, (error)=> {
       console.error('Error decoding file:', error);
     });
+  }
+
+  set gain(value) {
+    const wetValue = Math.cos(value * Math.PI / 2);
+    const levelValue = Math.cos((1 - value) * Math.PI / 2);
+    this.wet = wetValue;
+    this.level = levelValue;
   }
 }

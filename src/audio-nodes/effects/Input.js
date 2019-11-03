@@ -1,21 +1,23 @@
 
 import SingleAudioNode from '../SingleAudioNode';
 import MultiAudioNode from '../MultiAudioNode';
-import {hasGetUserMedia} from '../../Util';
+import {hasGetUserMedia, convertToMono} from '../../util';
 
 export default class Input extends SingleAudioNode {
-  constructor(audioContext) {
+  constructor(audioContext, mono = true) {
     super(audioContext);
     this._deferredConnects = [];
     this._hasPermissions = false;
+    this._isConvertedToMono = true;
   }
 
   get input() {
     return this.node;
   }
   set input(stream) {
-    // Create a media-stream source.
-    this.node = this.audioContext.createMediaStreamSource(stream);
+    // Create a media-stream source, by default in mono
+    let input = this.audioContext.createMediaStreamSource(stream);
+    this.node = this._isConvertedToMono ? convertToMono(this.audioContext, input) : input;
   }
   /**
      * Get your microphone sound as input.

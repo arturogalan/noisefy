@@ -1,4 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
+import {normalize} from '../../util';
 
 /**
  * The audio-effects delay class.
@@ -56,8 +57,8 @@ export default class Delay extends MultiAudioNode {
    * @param  {number|string} wetness
    */
   set wet(wetness) {
-    // Set the internal wetness value
-    this._wet = parseFloat(wetness);
+    // Set the internal wetness value 0 to 1
+    this._wet = parseFloat(normalize(1, wetness));
 
     // Set the new value for the wetness controll gain-node
     this.nodes.wetGainNode.gain.value = this._wet;
@@ -76,8 +77,8 @@ export default class Delay extends MultiAudioNode {
    * @param {number|string} speed
    */
   set speed(speed) {
-    // Set the internal speed value
-    this._speed = parseFloat(speed);
+    // Set the internal speed value 0 to 1
+    this._speed = parseFloat(normalize(1, speed));
 
     // Set the delayTime value of the delay-node
     this.nodes.delayNode.delayTime.value = this._speed;
@@ -96,8 +97,8 @@ export default class Delay extends MultiAudioNode {
    * @param  {number|string} duration
    */
   set duration(duration) {
-    // Set the internal duration value
-    this._duration = parseFloat(duration);
+    // Set the internal duration value 0 to 0.9
+    this._duration = parseFloat(normalize(0.9, duration));
 
     // Set the duration gain-node value
     this.nodes.durationGainNode.gain.value = this._duration;

@@ -13,10 +13,12 @@ module.exports = {
   // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
   extends: [
     'standard',
+    "eslint:recommended",
   ],
   plugins: [],
   // add your custom rules here
   'rules': {
+    'no-console': "off",
     // Possible Errors
     // http://eslint.org/docs/rules/#possible-errors
     'no-cond-assign': 0, // eslint:recommended
