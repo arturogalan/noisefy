@@ -1,6 +1,6 @@
 import SingleAudioNode from '../SingleAudioNode';
-import {validateValues} from '../../util';
-import {DISTORTION_TYPES, getDistortionTypeGenerateFunction} from '../factories/DistortionGenerator';
+import { validateValues } from '../../util';
+import { DISTORTION_TYPES, getDistortionTypeGenerateFunction } from '../factories/DistortionGenerator';
 /**
  * The audio-effects distortion class.
  * This class lets you add a distortion effect.

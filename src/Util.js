@@ -1,4 +1,4 @@
-let win = typeof window !== 'undefined' ? window : global;
+const win = typeof window !== 'undefined' ? window : global;
 /**
  * Check if the current browser supports getUserMedia.
  // https://stackoverflow.com/questions/37673000/typeerror-getusermedia-called-on-an-object-that-does-not-implement-interface
@@ -21,7 +21,7 @@ const hasAudioContext = !!audioContext;
 const deviceList = function() {
   return navigator.mediaDevices.enumerateDevices().then((devices)=> {
     return Promise.resolve(devices.map((device)=> {
-      let [kind, type, direction] = device.kind.match(/(\w+)(input|output)/i);
+      const [kind, type, direction] = device.kind.match(/(\w+)(input|output)/i);
       return {
         kind,
         type,
@@ -47,8 +47,8 @@ const validateValues = function(value, range, effectName) {
   }
 };
 const convertToMono = (audioContext, input)=> {
-  let splitter = audioContext.createChannelSplitter(2);
-  let merger = audioContext.createChannelMerger(2);
+  const splitter = audioContext.createChannelSplitter(2);
+  const merger = audioContext.createChannelMerger(2);
 
   input.connect(splitter);
   splitter.connect(merger, 0, 0);
@@ -58,8 +58,8 @@ const convertToMono = (audioContext, input)=> {
 const normalize = (max, value)=> {
   // The input of every effect is 0 to 10 based, helper to normalize
   const base = 10;
-  console.log('setted: ', (max * value)/base);
-  return (max * value)/base;
+  console.log('setted: ', (max * value) / base);
+  return (max * value) / base;
 };
 export {
   normalize,

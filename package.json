@@ -1,6 +1,6 @@
 {
   "name": "noisefy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JS library to wrap web audio funny effects",
   "author": "Arturo Galan <arturo.galan@gmail.com>",
   "license": "MIT",
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/arturogalan/noisefy#readme",
   "devDependencies": {
-    "@babel/cli": "^7.6.4",
+    "@babel/cli": "^7.6.4", 
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
     "babel-eslint": "^10.0.3",
