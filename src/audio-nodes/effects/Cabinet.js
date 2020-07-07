@@ -1,12 +1,12 @@
 import MultiAudioNode from '../MultiAudioNode';
-import {CABINET_TYPES} from '../factories/CabinetGenerator';
+import { normalize } from '../../util';
+import { CABINET_TYPES } from '../factories/CabinetGenerator';
 const irfRequiredFiles = {};
-Object.keys(CABINET_TYPES).forEach((cabinetImpulseKey)=> {
-  irfRequiredFiles[cabinetImpulseKey] = {
-    name: cabinetImpulseKey,
-    fileUrl: require(`../../assets/impulses/cabinet/${CABINET_TYPES[cabinetImpulseKey]}`),
-  };
-});
+
+const CABINET_LOCAL_TYPES = {};
+for (const type in CABINET_TYPES) {
+  CABINET_LOCAL_TYPES[type] = CABINET_TYPES[type];
+}
 
 const getInputResponseFile = function(file) {
   return fetch(file, {
@@ -30,6 +30,12 @@ export default class Cabinet extends MultiAudioNode {
   constructor(audioContext, requiredCabinetType) {
     super(audioContext);
 
+    Object.keys(CABINET_LOCAL_TYPES).forEach((cabinetImpulseKey)=> {
+      irfRequiredFiles[cabinetImpulseKey] = {
+        name: cabinetImpulseKey,
+        fileUrl: require(`../../assets/impulses/cabinet/${CABINET_LOCAL_TYPES[cabinetImpulseKey]}`),
+      };
+    });
     this.nodes = {
       inputGainNode: audioContext.createGain(), // Create the input and output gain-node
       outputGainNode: audioContext.createGain(),
@@ -151,9 +157,13 @@ export default class Cabinet extends MultiAudioNode {
     });
   }
 
+  get gain() {
+    return Math.cos(this.wet * Math.PI * 2);
+  }
   set gain(value) {
-    const wetValue = Math.cos(value * Math.PI / 2);
-    const levelValue = Math.cos((1 - value) * Math.PI / 2);
+    const normalizedValue = parseFloat(normalize(1, value));
+    const wetValue = Math.cos(normalizedValue * Math.PI / 2);
+    const levelValue = Math.cos((1 - normalizedValue) * Math.PI / 2);
     this.wet = wetValue;
     this.level = levelValue;
   }

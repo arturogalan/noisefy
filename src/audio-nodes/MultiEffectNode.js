@@ -29,6 +29,7 @@ export default class MultiEffectNode {
   set audioContext(audioContext) {
     this._audioContext = audioContext;
   }
+
   /**
    * The effect's audio-node getter.
    * @return {AudioNode} The audio-node used for the effect.
@@ -52,6 +53,7 @@ export default class MultiEffectNode {
   get output() {
     return this._outputNode;
   }
+
   // When creating and object that extends this class, you have to set this output property pointing to
   // the last audionNode of your main effect
   // to properly connect other elements throw the connect method beyond

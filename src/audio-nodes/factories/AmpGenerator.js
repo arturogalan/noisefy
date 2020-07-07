@@ -1,4 +1,4 @@
-import {CABINET_TYPES} from './CabinetGenerator';
+import { CABINET_TYPES } from './CabinetGenerator';
 
 
 // Here we define the different amp types and their schematics and cabinets, or cabinets shold be another generator?
@@ -11,6 +11,7 @@ export const AMP_SETTING_TYPE = {
   BOOLEAN: 'boolean',
   SELECT: 'select',
   CABINET: 'cabinet',
+  CABINET_KNOB: 'cabinet-knob',
 };
 export const AMP_SETTING_NAME = {
   DISTORTION_TYPE: 'distortionType',
@@ -301,7 +302,7 @@ export const AMP_TYPES_SCHEMAS = {
               min: 1,
               max: 10,
             },
-            normalize: (val)=> (val - 5) * 2,
+            // normalize: (val)=> (val - 5) * 2,
           },
         ],
       },
@@ -369,15 +370,9 @@ export const AMP_TYPES_SCHEMAS = {
             type: AMP_SETTING_TYPE.CABINET,
           },
           {
-            name: 'level',
-            value: 9,
-            type: AMP_SETTING_TYPE.INTERNAL,
-          },
-          {
-            name: 'wet',
-            value: 3,
-            type: AMP_SETTING_TYPE.INTERNAL,
-            normalize: (val)=> val / 10,
+            name: 'gain',
+            value: 5,
+            type: AMP_SETTING_TYPE.CABINET_KNOB,
           },
         ],
       },

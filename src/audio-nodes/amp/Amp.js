@@ -1,7 +1,7 @@
-import {AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_COMPONENT_NAME, AMP_COMPONENT_TYPE, AMP_SETTING_NAME} from '../factories/AmpGenerator';
-import {DISTORTION_TYPES} from '../factories/DistortionGenerator';
-import {CABINET_TYPES} from '../factories/CabinetGenerator';
-import {AMP_TYPES_PRESETS} from '../factories/PresetGenerator';
+import { AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_COMPONENT_NAME, AMP_COMPONENT_TYPE, AMP_SETTING_NAME } from '../factories/AmpGenerator';
+import { DISTORTION_TYPES } from '../factories/DistortionGenerator';
+import { CABINET_TYPES } from '../factories/CabinetGenerator';
+import { AMP_TYPES_PRESETS } from '../factories/PresetGenerator';
 import * as Noisefy from '../../index';
 import MultiEffectNode from '../MultiEffectNode';
 
@@ -111,7 +111,7 @@ export default class Amp extends MultiEffectNode {
   }
   getCabinetSettings() {
     console.log(getComponentSettingsByName(this._ampType, AMP_COMPONENT_NAME.CABINET));
-    return getComponentSettingsByName(this._ampType, AMP_COMPONENT_NAME.CABINET).filter((setting)=> setting.type === AMP_SETTING_TYPE.INTERNAL);
+    return getComponentSettingsByName(this._ampType, AMP_COMPONENT_NAME.CABINET).filter((setting)=> setting.type === AMP_SETTING_TYPE.CABINET_KNOB);
   }
   set preset(presetName) {
     const presetComponents = AMP_TYPES_PRESETS[this._ampType][presetName].COMPONENTS;

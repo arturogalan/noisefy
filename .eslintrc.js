@@ -126,7 +126,7 @@ module.exports = {
     'no-tabs': 2,
     'no-trailing-spaces': 2,
     'no-unneeded-ternary': 0,
-    'object-curly-spacing': 2,
+    "object-curly-spacing": ["off", "off"],
     'one-var': [2, {
       var: 'never',
       let: 'never',

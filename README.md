@@ -8,3 +8,6 @@ Bug or new funcionalities to add? [Issues section](https://github.com/arturogala
 
 
 ## TODO
+ampGenerator.js shoudnt have any normalize value, this should be inside the effects
+mirar los get de los efectos, si normalizamos en el set hay que de-normalizar en el get para que siempre sean 1-10 los inputs y los outputs
+si ponemos de tipo knob el gain del cabinet aparece tb en el header, hacer un nuevo tipo

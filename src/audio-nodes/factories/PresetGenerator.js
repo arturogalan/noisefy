@@ -1,5 +1,5 @@
-import {AMP_COMPONENT_NAME, AMP_TYPES} from './AmpGenerator';
-import {CABINET_TYPES} from './CabinetGenerator';
+import { AMP_COMPONENT_NAME, AMP_TYPES } from './AmpGenerator';
+import { CABINET_TYPES } from './CabinetGenerator';
 
 
 export const PRESET_TYPES = {
