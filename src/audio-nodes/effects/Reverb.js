@@ -80,7 +80,7 @@ export default class Reverb extends MultiAudioNode {
    */
   set wet(wetness) {
     // Set the internal wetness value
-    this._wet = parseFloat(wetness);
+    this._wet = parseFloat(normalize(1, wetness));
 
     // Set the new value for the wetness controll gain-node
     this.nodes.wetGainNode.gain.value = this._wet;

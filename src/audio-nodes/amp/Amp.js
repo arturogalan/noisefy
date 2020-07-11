@@ -65,7 +65,24 @@ export default class Amp extends MultiEffectNode {
     //Set the type
     this._ampType = ampTypeRequested;
   }
-
+  connectThemAll() {
+    //Connect them all!
+    const componentsKeys = Object.keys(this._components);
+    componentsKeys.forEach((componentKey, index)=> {
+      if (index === 0) {
+        console.log('setting input', componentKey);
+        this.input = this._components[componentKey];
+      }
+      if (index >= 1) {
+        console.log('connecting', componentsKeys[index - 1], 'with', componentKey );
+        this._components[componentsKeys[index - 1]].connect(this._components[componentKey]);
+      }
+      if (index === componentsKeys.length - 1) {
+        console.log('setting output', componentKey);
+        this.output = this._components[componentKey];
+      }
+    });
+  }
   // Expose method utility to set components properties
   setAmpComponentEffectProperty({componentName, componentProperty, value}) {
     const component = this._components[componentName];
@@ -80,6 +97,7 @@ export default class Amp extends MultiEffectNode {
     const normalize = componentPropDefinition.normalize || ((val)=> val);
     component[componentProperty] = normalize(value);
     console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
+    // this.connectThemAll();
   }
   getInputGainComponent() {
     return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.INPUT);

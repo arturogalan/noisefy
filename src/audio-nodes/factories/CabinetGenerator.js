@@ -1,10 +1,18 @@
 const CABINET_TYPES = {
-  WARSHALL_1: 'Marshall1960.wav',
-  WARSHALL_2: 'Marshall4.wav',
-  V0X: 'VoxM930O.wav',
-  BENDER: 'FenderChampAxisStereo.wav',
+  BLOCK: 'BLOCK',
+  WARSHALL_1: 'WARSHALL_1',
+  WARSHALL_2: 'WARSHALL_2',
+  V0X: 'V0X',
+  BENDER: 'BENDER',
 };
-
+const CABINET_FILES = {
+  [CABINET_TYPES.BLOCK]: 'BlockInside.wav',
+  [CABINET_TYPES.WARSHALL_1]: 'Marshall1960.wav',
+  [CABINET_TYPES.WARSHALL_2]: 'Marshall4.wav',
+  [CABINET_TYPES.V0X]: 'VoxM930O.wav',
+  [CABINET_TYPES.BENDER]: 'FenderChampAxisStereo.wav',
+};
 export {
+  CABINET_FILES,
   CABINET_TYPES,
 };

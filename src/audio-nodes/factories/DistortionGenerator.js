@@ -106,6 +106,8 @@ const getDistortionTypeGenerateFunction = (type)=> {
         let f = 2 * d / amount - 1;
         curve[d] = (1 + intensity) * f / (1 + intensity * Math.abs(f));
       }
+      console.log('not so distorted', curve);
+
       return curve;
     },
     [DISTORTION_TYPES.SUPER_CLEAN]: (intens)=> {
