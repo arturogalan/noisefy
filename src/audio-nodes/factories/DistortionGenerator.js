@@ -5,7 +5,7 @@ const DISTORTION_PRESETS = [
   {name: 'Hard Rock classic 3', distortionStage1: 'standardLow', distortionStage2: 'notSoDistorted'},
   {name: 'High Gain 1', distortionStage1: 'asymetric', distortionStage2: 'highGain'},
   {name: 'High Gain 2', distortionStage1: 'asymetric', distortionStage2: 'highGainModern'},
-  {name: 'Crunch', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
+  // {name: 'Crunch', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
   {name: 'Fuzz 1', distortionStage1: 'asymetric', distortionStage2: 'fuzz'},
   {name: 'Fuzz 2', distortionStage1: 'asymetric', distortionStage2: 'superFuzz'},
 ];
@@ -13,7 +13,7 @@ const DISTORTION_PRESETS = [
 const CLEAN_PRESETS = [
   {name: 'Clean and Warm', distortionStage1: 'asymetric', distortionStage2: 'standard'},
   {name: 'Clean no reverb', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
-  {name: 'Another Clean Sound', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
+  // {name: 'Another Clean Sound', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
   {name: 'Mostly even harmonics', distortionStage1: 'standard', distortionStage2: 'standard'},
   {name: 'Strong and Warm', distortionStage1: 'asymetric', distortionStage2: 'superClean'},
   {name: 'SuperClean/Jazz', distortionStage1: 'crunch', distortionStage2: 'crunch'},

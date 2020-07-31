@@ -215,7 +215,7 @@ export const AMP_TYPES_SCHEMAS = {
         settingsList: [
           {
             name: 'distortionType',
-            value: 'highGain',
+            value: 'highGainModern',
             type: AMP_SETTING_TYPE.SELECT,
           },
           {
@@ -260,7 +260,7 @@ export const AMP_TYPES_SCHEMAS = {
           {
             // (value-10) * 7 -70 to 0 when 1-10
             name: 'bassGain',
-            value: 8.2,
+            value: 6.2,
             type: AMP_SETTING_TYPE.KNOB,
             range: {
               min: 1,
@@ -371,7 +371,7 @@ export const AMP_TYPES_SCHEMAS = {
           },
           {
             name: 'gain',
-            value: 5,
+            value: 9,
             type: AMP_SETTING_TYPE.CABINET_KNOB,
           },
         ],

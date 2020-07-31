@@ -137,7 +137,7 @@ export default class Cabinet extends MultiAudioNode {
   }
 
   get gain() {
-    return Math.cos(this.wet * Math.PI * 2);
+    return this._gain;
   }
   set gain(value) {
     const normalizedValue = parseFloat(normalize(1, value));
@@ -145,5 +145,6 @@ export default class Cabinet extends MultiAudioNode {
     const levelValue = Math.cos((1 - normalizedValue) * Math.PI / 2);
     this.wet = wetValue;
     this.level = levelValue;
+    this._gain = normalizedValue;
   }
 }

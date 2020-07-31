@@ -99,12 +99,16 @@ export default class Amp extends MultiEffectNode {
     console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
     // this.connectThemAll();
   }
-  getInputGainComponent() {
-    return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.INPUT);
+  getAmpComponentEffectProperty({componentName, componentProperty}) {
+    const component = this._components[componentName];
+    return component[componentProperty];
   }
-  getOutputGainComponent() {
-    return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.OUTPUT);
-  }
+  // getInputGainComponent() {
+  //   return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.INPUT);
+  // }
+  // getOutputGainComponent() {
+  //   return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.OUTPUT);
+  // }
   // Retrieve all the settings of type Knob of all the components of the amp, grouped by component
   getKnobTypeComponents() {
     return filterComponentSettingsByType(this._ampType, AMP_SETTING_TYPE.KNOB);

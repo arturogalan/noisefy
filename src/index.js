@@ -1,7 +1,8 @@
 
+import Boost from './audio-nodes/effects/Boost';
 import Cabinet from './audio-nodes/effects/Cabinet';
-import Equalizer from './audio-nodes/effects/Equalizer';
 import Delay from './audio-nodes/effects/Delay';
+import Equalizer from './audio-nodes/effects/Equalizer';
 import Flanger from './audio-nodes/effects/Flanger';
 import Input from './audio-nodes/effects/Input';
 import Output from './audio-nodes/effects/Output';
@@ -25,6 +26,7 @@ import { BIQUAD_FILTER_TYPES } from './audio-nodes/factories/FiltersGenerator';
 import { PRESET_TYPES } from './audio-nodes/factories/PresetGenerator';
 
 export {
+  Boost,
   Cabinet,
   Equalizer,
   Delay,
