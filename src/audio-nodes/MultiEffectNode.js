@@ -1,5 +1,10 @@
 import SingleAudioNode from './SingleAudioNode';
 import MultiAudioNode from './MultiAudioNode';
+import * as Noisefy from '../index';
+
+const capitalize = function(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 /**
  * The multi-effect-node class.
  * When creating a more complex object existing out of multiple audio effects (for example an amp),
@@ -9,6 +14,7 @@ import MultiAudioNode from './MultiAudioNode';
  * The output node is the last audio-node in the las component effect, the next effect will be connected to this node.
  */
 export default class MultiEffectNode {
+
   constructor(audioContext) {
     // Set the audio-context.
     this._audioContext = audioContext;
@@ -30,6 +36,53 @@ export default class MultiEffectNode {
     this._audioContext = audioContext;
   }
 
+  set components(compsArray) {
+    this._components = {};
+    let prevComponent = undefined;
+    compsArray.forEach((component, index)=> {
+      const initializatedComponent = new Noisefy[capitalize(component.type)](this._audioContext);
+      console.log('creating ', capitalize(component.type));
+      for (const setting of component.settingsList) {
+        console.log('initializing', setting.name, 'setting to value:', setting.value);
+        initializatedComponent[setting.name] = setting.value;
+      }
+      //If first or last also input or output of the multiEffectNode
+      if (index === 0) {
+        this.input = initializatedComponent;
+      }
+      if (index === compsArray.length - 1) {
+        this.output = initializatedComponent;
+      }
+      // Connect to the previous component
+      if(prevComponent) {
+        prevComponent.connect(initializatedComponent)
+      }
+      prevComponent = initializatedComponent;
+      this._components[component.name] = initializatedComponent;
+    })
+  }
+
+  setEffectProperty({componentName, componentProperty, value}) {
+    const component = this._components[componentName];
+    const componentProp = component[componentProperty];
+    const componentPropDefinition = componentDefinition.settingsList.find((prop)=> prop.name === componentProperty);
+    if (!component) {console.error(`component ${componentName} not found in amp`); return;}
+    if (componentProp === undefined) {console.error(`componentProperty ${componentProperty} not found in component ${componentName}`); return;}
+    if (componentPropDefinition === undefined) {console.error(`componentPropDefinition ${componentProperty} not found in AmpGenerator component ${componentName}`); return;}
+
+    const normalize = componentPropDefinition.normalize || ((val)=> val);
+    component[componentProperty] = normalize(value);
+    console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
+  }
+
+  get components(){
+    return this._components;
+  }
+  getCompSettingValue({componentName, settingName}) {
+    const comp = this._components[componentName];
+    if (!comp) throw new Error(`The comp ${componentName} is not included in the effects list.`);
+    return comp[settingName];
+  }
   /**
    * The effect's audio-node getter.
    * @return {AudioNode} The audio-node used for the effect.

@@ -399,5 +399,659 @@ export const AMP_TYPES_SCHEMAS = {
         ],
       },
     },
+
+
+
+
+    INPUT: {
+      name: 'input',
+      type: AMP_COMPONENT_TYPE.VOLUME,
+      settingsList: [
+        {
+          name: 'level',
+          value: 1,
+          type: AMP_SETTING_TYPE.INPUT,
+          range: {
+            min: 0,
+            max: 10,
+          },
+          normalize: (val)=> val / 10,
+        },
+        {
+          name: 'mute',
+          value: false,
+          type: AMP_SETTING_TYPE.BOOLEAN,
+        },
+      ],
+    },
+    
+    OUTPUT: {
+      name: 'output',
+      type: AMP_COMPONENT_TYPE.VOLUME,
+      settingsList: [
+        {
+          name: 'level',
+          value: 0.5,
+          type: AMP_SETTING_TYPE.OUTPUT,
+          range: {
+            min: 0,
+            max: 10,
+          },
+          normalize: (val)=> val / 100,
+        },
+        {
+          name: 'mute',
+          value: false,
+          type: AMP_SETTING_TYPE.BOOLEAN,
+        },
+      ],
+    },
+
+    CHANNEL_1: [
+      // No knob for this input gain set to 1
+      {
+        name: 'inputGain',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 1,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+      // bypass not added
+      {
+        name: 'lowShelf1',
+        type: AMP_COMPONENT_TYPE.LOWSHELF,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -6,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 720,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'lowShelf2',
+        type: AMP_COMPONENT_TYPE.LOWSHELF,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -5,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 320,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'preampStage1',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 1,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+      // As this disto is asymetric and intensity is not relevant, at this moment
+      // we define it as internal maybe in a future we should let the user change this disto type
+      {
+        name: 'distortionStage1',
+        type: AMP_COMPONENT_TYPE.DISTORTION,
+        settingsList: [
+          {
+            name: 'distortionType',
+            value: 'asymetric',
+            // type: AMP_SETTING_TYPE.SELECT,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            // 0 to 10
+            name: 'intensity',
+            value: 8,
+            type: AMP_SETTING_TYPE.KNOB,
+            // type: AMP_SETTING_TYPE.INTERNAL,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
+          },
+        ],
+      },
+      {
+        name: 'highPass1',
+        type: AMP_COMPONENT_TYPE.HIGHPASS,
+        settingsList: [
+          {
+            name: 'frequency',
+            value: 6,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'QValue',
+            value: 0.7071,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'lowShelf3',
+        type: AMP_COMPONENT_TYPE.LOWSHELF,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -6,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 720,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'preampStage2',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 1,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+      // esta no tiene curve_length MAL
+      {
+        name: 'distortionStage2',
+        type: AMP_COMPONENT_TYPE.DISTORTION,
+        settingsList: [
+          {
+            name: 'distortionType',
+            value: 'standard',
+            type: AMP_SETTING_TYPE.SELECT,
+          },
+          {
+            name: 'intensity',
+            value: 3,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
+          },
+        ],
+      },
+      // This is the VOLUME knob
+      // 0 to 1
+      {
+        name: 'outputGain',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 0.5,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val / 10,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+      {
+        name: 'equalizer',
+        type: AMP_COMPONENT_TYPE.EQUALIZER,
+        settingsList: [
+          {
+            // (value-10) * 7 -70 to 0 when 1-10
+            name: 'bassGain',
+            value: 6.2,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
+          },
+          {
+            // (value-5) * 4 -20 to 20 when 1-10
+            name: 'middleGain',
+            value: 8.2,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
+          },
+          {
+            // (value-10) * 10 |    -100 to 0;
+            name: 'trebbleGain',
+            value: 4,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: -100,
+              max: 0,
+            },
+          },
+        ],
+      },
+      // -10 to 10 --- (value-5) * 2 when 1-10
+      {
+        name: 'presence',
+        type: AMP_COMPONENT_TYPE.PRESENCE,
+        settingsList: [
+          {
+            name: 'gain',
+            value: 6.9,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
+            // normalize: (val)=> (val - 5) * 2,
+          },
+        ],
+      },
+    {
+        name: 'eqLowCut',
+        type: AMP_COMPONENT_TYPE.PEAKING,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -19,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 60,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'eqHighCut',
+        type: AMP_COMPONENT_TYPE.PEAKING,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -25,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 10000,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      // This is the master volume knob 0 to 10
+      {
+        name: 'master',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 3,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+    ],
+    
+    CHANNEL_2: [
+      // No knob for this input gain set to 1
+      {
+        name: 'inputGain',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 1,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+      // bypass not added
+      {
+        name: 'lowShelf1',
+        type: AMP_COMPONENT_TYPE.LOWSHELF,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -6,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 720,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'lowShelf2',
+        type: AMP_COMPONENT_TYPE.LOWSHELF,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -5,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 320,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'preampStage1',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 1,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+      // As this disto is asymetric and intensity is not relevant, at this moment
+      // we define it as internal maybe in a future we should let the user change this disto type
+      {
+        name: 'distortionStage1',
+        type: AMP_COMPONENT_TYPE.DISTORTION,
+        settingsList: [
+          {
+            name: 'distortionType',
+            value: 'asymetric',
+            // type: AMP_SETTING_TYPE.SELECT,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            // 0 to 10
+            name: 'intensity',
+            value: 8,
+            type: AMP_SETTING_TYPE.KNOB,
+            // type: AMP_SETTING_TYPE.INTERNAL,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
+          },
+        ],
+      },
+      {
+        name: 'highPass1',
+        type: AMP_COMPONENT_TYPE.HIGHPASS,
+        settingsList: [
+          {
+            name: 'frequency',
+            value: 6,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'QValue',
+            value: 0.7071,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'lowShelf3',
+        type: AMP_COMPONENT_TYPE.LOWSHELF,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -6,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 720,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'preampStage2',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 1,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+      // esta no tiene curve_length MAL
+      {
+        name: 'distortionStage2',
+        type: AMP_COMPONENT_TYPE.DISTORTION,
+        settingsList: [
+          {
+            name: 'distortionType',
+            value: 'highGainModern',
+            type: AMP_SETTING_TYPE.SELECT,
+          },
+          {
+            name: 'intensity',
+            value: 3,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
+          },
+        ],
+      },
+      // This is the VOLUME knob
+      // 0 to 1
+      {
+        name: 'outputGain',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 0.5,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val / 10,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+      {
+        name: 'equalizer',
+        type: AMP_COMPONENT_TYPE.EQUALIZER,
+        settingsList: [
+          {
+            // (value-10) * 7 -70 to 0 when 1-10
+            name: 'bassGain',
+            value: 6.2,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
+          },
+          {
+            // (value-5) * 4 -20 to 20 when 1-10
+            name: 'middleGain',
+            value: 8.2,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
+          },
+          {
+            // (value-10) * 10 |    -100 to 0;
+            name: 'trebbleGain',
+            value: 4,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: -100,
+              max: 0,
+            },
+          },
+        ],
+      },
+      // -10 to 10 --- (value-5) * 2 when 1-10
+      {
+        name: 'presence',
+        type: AMP_COMPONENT_TYPE.PRESENCE,
+        settingsList: [
+          {
+            name: 'gain',
+            value: 6.9,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 1,
+              max: 10,
+            },
+            // normalize: (val)=> (val - 5) * 2,
+          },
+        ],
+      },
+      {
+        name: 'eqLowCut',
+        type: AMP_COMPONENT_TYPE.PEAKING,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -19,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 60,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      {
+        name: 'eqHighCut',
+        type: AMP_COMPONENT_TYPE.PEAKING,
+        settingsList: [
+          {
+            name: 'gain',
+            value: -25,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+          {
+            name: 'frequency',
+            value: 10000,
+            type: AMP_SETTING_TYPE.INTERNAL,
+          },
+        ],
+      },
+      // This is the master volume knob 0 to 10
+      {
+        name: 'master',
+        type: AMP_COMPONENT_TYPE.VOLUME,
+        settingsList: [
+          {
+            name: 'level',
+            value: 3,
+            type: AMP_SETTING_TYPE.KNOB,
+            range: {
+              min: 0,
+              max: 10,
+            },
+            normalize: (val)=> val,
+          },
+          {
+            name: 'mute',
+            value: false,
+            type: AMP_SETTING_TYPE.BOOLEAN,
+          },
+        ],
+      },
+    ],    
+    CABINET: {
+      name: AMP_COMPONENT_NAME.CABINET,
+      type: AMP_COMPONENT_TYPE.CABINET,
+      settingsList: [
+        {
+          name: 'cabinetImpulse',
+          value: CABINET_TYPES.WARSHALL_1,
+          type: AMP_SETTING_TYPE.CABINET,
+        },
+        {
+          name: 'gain',
+          value: 90,
+          type: AMP_SETTING_TYPE.CABINET_KNOB,
+        },
+      ],
+    },
+
   },
 };
