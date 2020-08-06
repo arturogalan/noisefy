@@ -30,10 +30,10 @@ export default class Distortion extends SingleAudioNode {
     // calculate adjustment factor
     let scale = (maxv - minv) / (maxp - minp);
     // end of logarithmic adjustment
-
-    this._intensity = Math.exp(minv + scale * (value - minp));
-    console.log('setting', this.distortionType, 'intensity', this._intensity);
-    this.node.curve = getDistortionTypeGenerateFunction(this.distortionType)(this._intensity);
+    const normalizedIntensity = Math.exp(minv + scale * (value - minp));
+    console.log('setting', this.distortionType, 'normalized intensity', normalizedIntensity);
+    this.node.curve = getDistortionTypeGenerateFunction(this.distortionType)(normalizedIntensity);
+    this._intensity = intensity;
   }
 
   get distortionType() {

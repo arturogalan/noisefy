@@ -40,27 +40,29 @@ export default class Equalizer extends MultiAudioNode {
     return this._trebbleGain;
   }
   set trebbleGain(gain) {
-    const normalizedValue = parseFloat(gain);
-    this._trebbleGain = (normalizedValue - 10) * 10;
-    console.log('trebble gain', this._trebbleGain);
-    this.nodes.trebbleFilterNode.gain.value = this._trebbleGain;
+    console.log('trebble gain raw: ', gain);
+
+    const normalizedValue = (parseFloat(gain) - 10) * 10;
+    console.log('trebble gain normalized: ', normalizedValue);
+    this.nodes.trebbleFilterNode.gain.value = normalizedValue;
+    this._trebbleGain = gain;
   }
   get middleGain() {
     return this._middleGain;
   }
   set middleGain(gain) {
-    const normalizedValue = parseFloat(gain);
-    this._middleGain = (normalizedValue - 5) * 4;
-    console.log('middle gain', this._middleGain);
-    this.nodes.middleFilterNode.gain.value = this._middleGain;
+    const normalizedValue = (parseFloat(gain) - 5) * 4;
+    console.log('middle gain', normalizedValue);
+    this.nodes.middleFilterNode.gain.value = normalizedValue;
+    this._middleGain = gain;
   }
   get bassGain() {
     return this._bassGain;
   }
   set bassGain(gain) {
-    const normalizedValue = parseFloat(gain);
-    this._bassGain = (normalizedValue - 10) * 7;
-    console.log('bass gain', this._bassGain);
-    this.nodes.bassFilterNode.gain.value = this._bassGain;
+    const normalizedValue = (parseFloat(gain) - 10) * 7;
+    this.nodes.bassFilterNode.gain.value = normalizedValue;
+    console.log('bass gain', normalizedValue);
+    this._bassGain = gain;
   }
 }
