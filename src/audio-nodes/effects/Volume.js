@@ -39,12 +39,9 @@ export default class Volume extends SingleAudioNode {
     this._level = volume;
     // Parse the volume, it can not be lower than 0.
     let vol = parseFloat(volume >= 0 ? volume : 0);
-    console.log('raw volume', volume);
-    console.log('is muted', this._mute);
     if (this._mute && vol > 0) {
       this._levelBeforeMute = volume;
     } else {
-      console.log('SETTED normalized vol with undersampling', this._undersampling, 'to', vol / this._undersampling)
       this.node.gain.value = vol / this._undersampling;
       this._mute = (vol === 0);
     }

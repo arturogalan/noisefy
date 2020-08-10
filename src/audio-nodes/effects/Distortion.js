@@ -43,8 +43,8 @@ export default class Distortion extends SingleAudioNode {
   set distortionType(distortionTypeRequested) {
     if (Object.values(DISTORTION_TYPES).includes(distortionTypeRequested)) {
       this._distortionType = distortionTypeRequested;
-      this.node.curve = getDistortionTypeGenerateFunction(this._distortionType)(this._intensity);
-      console.log(`The distortion type ${distortionTypeRequested} has been set`);
+      // Force recalculation of intensity and curve
+      this.intensity = this._intensity;
     } else {
       throw new Error(`The distorion type ${distortionTypeRequested} is not included in the distortionTypes set.`);
     }

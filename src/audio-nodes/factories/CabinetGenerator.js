@@ -1,18 +1,18 @@
-const CABINET_TYPES = {
-  BLOCK: 'BLOCK',
-  WARSHALL_1: 'WARSHALL_1',
-  WARSHALL_2: 'WARSHALL_2',
-  V0X: 'V0X',
-  BENDER: 'BENDER',
-};
+
+const DEFAULT_CABINET = 'MARSHALL_1960';
+
 const CABINET_FILES = {
-  [CABINET_TYPES.BLOCK]: 'BlockInside.wav',
-  [CABINET_TYPES.WARSHALL_1]: 'Marshall1960.wav',
-  [CABINET_TYPES.WARSHALL_2]: 'Marshall4.wav',
-  [CABINET_TYPES.V0X]: 'VoxM930O.wav',
-  [CABINET_TYPES.BENDER]: 'FenderChampAxisStereo.wav',
+  LINE_6_SPIDER_III: 'Line6SpiderIIISM57.wav',
+  MARSHALL_1960: 'Marshall1960VBSM57ROCKSTA.wav',
+  MARSHALL_JCM800: 'MarshallJCM800.wav',
+  MARSHALL_MF28: 'MarshallMF280B.wav',
+  MESA_BOOGIE: 'MesaTraditional.wav',
+  ORANGE: 'OrangeSM57.wav',
+  BUGERA_V55: 'BugeraV55InfiniumSM57.wav',
+  FENDER_TWIN: 'FenderTwinReverbSM57.wav',
+  VOX: 'VOX.wav',
 };
 export {
   CABINET_FILES,
-  CABINET_TYPES,
+  DEFAULT_CABINET,
 };

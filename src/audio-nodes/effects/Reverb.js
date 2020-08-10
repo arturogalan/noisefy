@@ -1,6 +1,7 @@
 import MultiAudioNode from '../MultiAudioNode';
 import {normalize} from '../../util';
-const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
+// const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
+const irf = require('../../assets/impulses/reverb/cardiod-rear-levelled.wav');
 
 const getInputResponseFile = function(file) {
   return fetch(file, {

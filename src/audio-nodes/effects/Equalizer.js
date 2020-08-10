@@ -40,8 +40,7 @@ export default class Equalizer extends MultiAudioNode {
     return this._trebbleGain;
   }
   set trebbleGain(gain) {
-    console.log('trebble gain raw: ', gain);
-
+    // console.log('trebble gain raw: ', gain);
     const normalizedValue = (parseFloat(gain) - 10) * 10;
     console.log('trebble gain normalized: ', normalizedValue);
     this.nodes.trebbleFilterNode.gain.value = normalizedValue;
@@ -52,7 +51,7 @@ export default class Equalizer extends MultiAudioNode {
   }
   set middleGain(gain) {
     const normalizedValue = (parseFloat(gain) - 5) * 4;
-    console.log('middle gain', normalizedValue);
+    // console.log('middle gain', normalizedValue);
     this.nodes.middleFilterNode.gain.value = normalizedValue;
     this._middleGain = gain;
   }
@@ -62,7 +61,7 @@ export default class Equalizer extends MultiAudioNode {
   set bassGain(gain) {
     const normalizedValue = (parseFloat(gain) - 10) * 7;
     this.nodes.bassFilterNode.gain.value = normalizedValue;
-    console.log('bass gain', normalizedValue);
+    // console.log('bass gain', normalizedValue);
     this._bassGain = gain;
   }
 }

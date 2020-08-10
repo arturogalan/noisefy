@@ -1,4 +1,4 @@
-import { CABINET_TYPES } from './CabinetGenerator';
+import { DEFAULT_CABINET } from './CabinetGenerator';
 
 
 // Here we define the different amp types and their schematics and cabinets, or cabinets shold be another generator?
@@ -51,7 +51,7 @@ export const AMP_TYPES_SCHEMAS = {
       settingsList: [
         {
           name: 'level',
-          value: 5,
+          value: 1.6,
           type: AMP_SETTING_TYPE.INPUT,
         },
         {
@@ -68,7 +68,7 @@ export const AMP_TYPES_SCHEMAS = {
       settingsList: [
         {
           name: 'level',
-          value: 5,
+          value: 3,
           type: AMP_SETTING_TYPE.OUTPUT,
         },
         // Values in gain from 0 to 1
@@ -167,7 +167,7 @@ export const AMP_TYPES_SCHEMAS = {
           {
             // 0 to 10
             name: 'intensity',
-            value: 8,
+            value: 1,
             type: AMP_SETTING_TYPE.KNOB,
           },
         ],
@@ -232,7 +232,7 @@ export const AMP_TYPES_SCHEMAS = {
           },
           {
             name: 'intensity',
-            value: 3,
+            value: 1,
             type: AMP_SETTING_TYPE.KNOB,
           },
         ],
@@ -245,7 +245,7 @@ export const AMP_TYPES_SCHEMAS = {
         settingsList: [
           {
             name: 'level',
-            value: 5,
+            value: 6,
             type: AMP_SETTING_TYPE.KNOB,
           },
           // Values in gain from 0 to 1
@@ -336,7 +336,7 @@ export const AMP_TYPES_SCHEMAS = {
         settingsList: [
           {
             name: 'level',
-            value: 3,
+            value: 5,
             type: AMP_SETTING_TYPE.KNOB,
           }, 
           {
@@ -639,7 +639,7 @@ export const AMP_TYPES_SCHEMAS = {
       settingsList: [
         {
           name: 'cabinetImpulse',
-          value: CABINET_TYPES.WARSHALL_1,
+          value: DEFAULT_CABINET,
           type: AMP_SETTING_TYPE.CABINET,
         },
         {

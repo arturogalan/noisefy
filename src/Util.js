@@ -58,13 +58,11 @@ const convertToMono = (audioContext, input)=> {
 const normalize = (max, value)=> {
   // The input of every effect is 0 to 10 based, helper to normalize
   const base = 10;
-  console.log('setted: ', (max * value) / base);
   return (max * value) / base;
 };
 const denormalize = (max, value)=> {
   // The input of every effect is 0 to 10 based, helper to denormalize
   const base = 10;
-  console.log('setted: ', (max * value) / base);
   return (max * value) * base;
 };
 const scale = (num, inMin, inMax, outMin, outMax)=> {

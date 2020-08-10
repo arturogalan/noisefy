@@ -1,22 +1,21 @@
 
 const DISTORTION_PRESETS = [
-  {name: 'Hard Rock classic 1', distortionStage1: 'asymetric', distortionStage2: 'notSoDistorted'},
-  {name: 'Hard Rock classic 2', distortionStage1: 'standard', distortionStage2: 'notSoDistorted'},
-  {name: 'Hard Rock classic 3', distortionStage1: 'standardLow', distortionStage2: 'notSoDistorted'},
-  {name: 'High Gain 1', distortionStage1: 'asymetric', distortionStage2: 'highGain'},
-  {name: 'High Gain 2', distortionStage1: 'asymetric', distortionStage2: 'highGainModern'},
+  {name: 'Fuzz', distortionStage1: 'asymetric', distortionStage2: 'superFuzz'},
+  {name: 'Hard Rock classic', distortionStage1: 'asymetric', distortionStage2: 'vertical'},
+  {name: 'Modern High Gain', distortionStage1: 'asymetric', distortionStage2: 'highGainModern'},
+  // {name: 'Fuzz 1', distortionStage1: 'asymetric', distortionStage2: 'fuzz'},
+  // {name: 'High Gain 1', distortionStage1: 'asymetric', distortionStage2: 'highGain'},
+  // {name: 'Hard Rock classic 2', distortionStage1: 'standardLow', distortionStage2: 'vertical'},
   // {name: 'Crunch', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
-  {name: 'Fuzz 1', distortionStage1: 'asymetric', distortionStage2: 'fuzz'},
-  {name: 'Fuzz 2', distortionStage1: 'asymetric', distortionStage2: 'superFuzz'},
 ];
 
 const CLEAN_PRESETS = [
-  {name: 'Clean and Warm', distortionStage1: 'asymetric', distortionStage2: 'standard'},
-  {name: 'Clean no reverb', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
+  {name: 'Clean standard', distortionStage1: 'asymetric', distortionStage2: 'standard'},
+  {name: 'Clean crystal', distortionStage1: 'asymetric', distortionStage2: 'superClean'},
+  {name: 'Clean crunchy', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
+  // {name: 'Harmonics', distortionStage1: 'standard', distortionStage2: 'standard'},
+  // {name: 'Crunchy 2', distortionStage1: 'crunch', distortionStage2: 'crunch'},
   // {name: 'Another Clean Sound', distortionStage1: 'asymetric', distortionStage2: 'crunch'},
-  {name: 'Mostly even harmonics', distortionStage1: 'standard', distortionStage2: 'standard'},
-  {name: 'Strong and Warm', distortionStage1: 'asymetric', distortionStage2: 'superClean'},
-  {name: 'SuperClean/Jazz', distortionStage1: 'crunch', distortionStage2: 'crunch'},
 ];
 
 const DISTORTION_TYPES = {
@@ -28,7 +27,6 @@ const DISTORTION_TYPES = {
   CLEAN: 'clean',
   SUPER_CLEAN: 'superClean',
   SMOOTH: 'smooth',
-  NOT_SO_DISTORTED: 'notSoDistorted',
   FUZZ: 'fuzz',
   SUPERFUZZ: 'superFuzz',
   CRUNCH: 'crunch',
@@ -72,12 +70,15 @@ const getDistortionTypeGenerateFunction = (type)=> {
     },
     [DISTORTION_TYPES.HIGH_GAIN_MODERN]: (intens)=> {
       let intensity = 1 / (1 + Math.pow((intens / 2), 4));
+      // console.log('internal intensity', intensity)
       const amount = 22050;
       const curve = new Float32Array(amount);
 
       for (let i = 0; amount > i; i += 1) {
         let x = 2 * i / amount - 1;
-        curve[i] = x / (Math.abs(x) + intensity);
+        // gain does nothing, adding * 100 to intensity
+        // curve[i] = x / (Math.abs(x) + intensity);
+        curve[i] = x / (Math.abs(x) + (intensity * 100));
       }
       return curve;
     },
@@ -97,7 +98,7 @@ const getDistortionTypeGenerateFunction = (type)=> {
       }
       return curve;
     },
-    [DISTORTION_TYPES.NOT_SO_DISTORTED]: (intens)=> {
+    [DISTORTION_TYPES.VERTICAL]: (intens)=> {
       let intensity = Math.pow((intens / 150) + 2, 3);
       const amount = 22050;
       const curve = new Float32Array(amount);
@@ -106,10 +107,8 @@ const getDistortionTypeGenerateFunction = (type)=> {
         let f = 2 * d / amount - 1;
         curve[d] = (1 + intensity) * f / (1 + intensity * Math.abs(f));
       }
-      console.log('not so distorted', curve);
-
       return curve;
-    },
+    }, 
     [DISTORTION_TYPES.SUPER_CLEAN]: (intens)=> {
       let intensity = (((intens / 150) + 6) / 4);
       const amount = 22050;

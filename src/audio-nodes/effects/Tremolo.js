@@ -3,6 +3,8 @@ import SingleAudioNode from '../SingleAudioNode';
 /**
  * The audio-effects tremolo class.
  * This class lets you add a tremolo effect.
+ * 
+ * Standard values are "sine", "square", "sawtooth", "triangle" and "custom". The default is "sine".
  */
 export default class Tremolo extends SingleAudioNode {
   // private _speed: number;

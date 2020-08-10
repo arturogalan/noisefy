@@ -1,9 +1,11 @@
 import MultiAudioNode from '../MultiAudioNode';
 import { normalize } from '../../util';
-import { CABINET_FILES, CABINET_TYPES } from '../factories/CabinetGenerator';
+import { CABINET_FILES } from '../factories/CabinetGenerator';
 
 const CABINET_LOCAL_FILES = {};
+let defaultCabinet = undefined;
 for (const type in CABINET_FILES) {
+  if (!defaultCabinet) defaultCabinet = type;
   CABINET_LOCAL_FILES[type] = CABINET_FILES[type];
 }
 
@@ -51,7 +53,8 @@ export default class Cabinet extends MultiAudioNode {
     this.output = this.nodes.outputGainNode;
 
     this.gain = 5;
-    this._cabinetImpulse = CABINET_TYPES.BLOCK;
+    // set by default the first cabinet we found in definition
+    this._cabinetImpulse = defaultCabinet;
   }
 
   set responseFile(file) {
@@ -67,7 +70,6 @@ export default class Cabinet extends MultiAudioNode {
   }
 
   set cabinetImpulse(requiredCabinetType) {
-    console.log('setted: ', requiredCabinetType);
     const file = require(`../../assets/impulses/cabinet/${CABINET_LOCAL_FILES[requiredCabinetType]}`);
     this.responseFile = file;
     this._cabinetImpulse = requiredCabinetType;
