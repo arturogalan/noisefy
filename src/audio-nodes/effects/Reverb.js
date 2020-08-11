@@ -130,4 +130,16 @@ export default class Reverb extends MultiAudioNode {
       console.error('Error decoding file:', error);
     });
   }
+
+  get gain() {
+    return this._gain;
+  }
+  set gain(value) {
+    const normalizedValue = parseFloat(normalize(1, value));
+    const wetValue = Math.cos(normalizedValue * Math.PI / 2);
+    const levelValue = Math.cos((1 - normalizedValue) * Math.PI / 2);
+    this.wet = wetValue;
+    this.level = levelValue;
+    this._gain = normalizedValue;
+  }
 }
