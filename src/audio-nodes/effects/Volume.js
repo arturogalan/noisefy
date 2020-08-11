@@ -18,11 +18,16 @@ export default class Volume extends SingleAudioNode {
     // not muted
     this._mute = false;
   }
-  
+
+  get undersampling() {
+    return this._undersampling;
+  }
+
   set undersampling(value) {
     this._undersampling = value;
     this.level = this._level;
   }
+
   /**
      * Getter for the effects volume.
      * @return {Float}
@@ -38,7 +43,7 @@ export default class Volume extends SingleAudioNode {
   set level(volume) {
     this._level = volume;
     // Parse the volume, it can not be lower than 0.
-    let vol = parseFloat(volume >= 0 ? volume : 0);
+    const vol = parseFloat(volume >= 0 ? volume : 0);
     if (this._mute && vol > 0) {
       this._levelBeforeMute = volume;
     } else {

@@ -1,7 +1,7 @@
 import MultiAudioNode from '../MultiAudioNode';
 import {normalize} from '../../util';
-// const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
-const irf = require('../../assets/impulses/reverb/cardiod-rear-levelled.wav');
+const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
+// const irf = require('../../assets/impulses/reverb/cardiod-rear-levelled.wav');
 
 const getInputResponseFile = function(file) {
   return fetch(file, {
@@ -53,6 +53,10 @@ export default class Reverb extends MultiAudioNode {
     this.level = 1;
 
     this.responseFile = irf;
+  }
+
+  get responseFile() {
+    return this.responseFile;
   }
 
   set responseFile(file) {
@@ -134,6 +138,7 @@ export default class Reverb extends MultiAudioNode {
   get gain() {
     return this._gain;
   }
+
   set gain(value) {
     const normalizedValue = parseFloat(normalize(1, value));
     const wetValue = Math.cos(normalizedValue * Math.PI / 2);

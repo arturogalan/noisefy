@@ -34,7 +34,7 @@ export const AMP_COMPONENT_TYPE = {
 // This order is the order the components appear in the amp header
 export const AMP_COMPONENT_NAME = {
   CABINET: 'cabinet',
-  DISTORTION: 'distortion', //input?
+  DISTORTION: 'distortion', // input?
   EQUALIZER: 'equalizer',
   PRESENCE: 'presence',
   VOLUME: 'volume',
@@ -61,7 +61,7 @@ export const AMP_TYPES_SCHEMAS = {
         },
       ],
     },
-    
+
     OUTPUT: {
       name: 'output',
       type: AMP_COMPONENT_TYPE.VOLUME,
@@ -297,7 +297,7 @@ export const AMP_TYPES_SCHEMAS = {
           },
         ],
       },
-    {
+      {
         name: 'eqLowCut',
         type: AMP_COMPONENT_TYPE.PEAKING,
         settingsList: [
@@ -338,7 +338,7 @@ export const AMP_TYPES_SCHEMAS = {
             name: 'level',
             value: 5,
             type: AMP_SETTING_TYPE.KNOB,
-          }, 
+          },
           {
             name: 'mute',
             value: false,
@@ -347,21 +347,6 @@ export const AMP_TYPES_SCHEMAS = {
         ],
       },
     ],
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     CHANNEL_2: [
@@ -617,7 +602,7 @@ export const AMP_TYPES_SCHEMAS = {
             name: 'level',
             value: 5,
             type: AMP_SETTING_TYPE.KNOB,
-          },     
+          },
           {
             name: 'mute',
             value: false,
@@ -627,11 +612,6 @@ export const AMP_TYPES_SCHEMAS = {
       },
     ],
 
-
-
-    
-    
-    
 
     CABINET: {
       name: AMP_COMPONENT_NAME.CABINET,

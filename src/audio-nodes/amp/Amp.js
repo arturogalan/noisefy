@@ -1,4 +1,4 @@
-import { AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_COMPONENT_NAME, AMP_COMPONENT_TYPE, AMP_SETTING_NAME } from '../factories/AmpGenerator';
+import { AMP_TYPES, AMP_TYPES_SCHEMAS, AMP_SETTING_TYPE, AMP_COMPONENT_TYPE, AMP_SETTING_NAME } from '../factories/AmpGenerator';
 import { DISTORTION_TYPES } from '../factories/DistortionGenerator';
 import { CABINET_FILES } from '../factories/CabinetGenerator';
 import { AMP_TYPES_PRESETS } from '../factories/PresetGenerator';
@@ -19,8 +19,8 @@ const filterChannelComponentsByType = ({ampType, channelNumber, selectedChannel,
       .map((setting)=> {
         return {
           name: setting.name,
-          value: selectedChannel.getCompSettingValue({componentName: component.name, settingName: setting.name})
-        }
+          value: selectedChannel.getCompSettingValue({componentName: component.name, settingName: setting.name}),
+        };
       });
     if (settingsNames.length) {
       componentNames.push({
@@ -30,10 +30,6 @@ const filterChannelComponentsByType = ({ampType, channelNumber, selectedChannel,
     }
   });
   return componentNames;
-}
-const getComponentSettingsByName = function(requestedAmpType, requestedName) {
-  const component = Object.values(AMP_TYPES_SCHEMAS[requestedAmpType].COMPONENTS).find((c)=> c.name === requestedName);
-  return component.settingsList.map((setting)=> ({name: setting.name, value: setting.value, type: setting.type}));
 };
 
 export default class Amp {
@@ -44,9 +40,9 @@ export default class Amp {
     }
     console.log('Creating amp of type: ', ampTypeRequested);
 
-    this._channel1 = new MultiEffectNode(this._audioContext)
+    this._channel1 = new MultiEffectNode(this._audioContext);
     this._channel1.components = AMP_TYPES_SCHEMAS[ampTypeRequested].CHANNEL_1;
-    this._channel2 = new MultiEffectNode(this._audioContext)
+    this._channel2 = new MultiEffectNode(this._audioContext);
     this._channel2.components = AMP_TYPES_SCHEMAS[ampTypeRequested].CHANNEL_2;
 
     const inputComponent = AMP_TYPES_SCHEMAS[ampTypeRequested].INPUT;
@@ -94,7 +90,7 @@ export default class Amp {
     this._channel2.output.connect(this._cabinet);
     this._cabinet.connect(this._output);
 
-    //By default channel1 (clean channel) active
+    // By default channel1 (clean channel) active
     this._ampBypass.mute = true;
     this._ampBypass.level = 1;
     this._channel1Bypass.level = 1;
@@ -102,61 +98,72 @@ export default class Amp {
     this._channel2Bypass.mute = true;
     this._activeChannel = 1;
 
-    //By default amp muted
+    // By default amp muted
     this.muted = true;
-    //Set the type
+    // Set the type
     this._ampType = ampTypeRequested;
-
   }
 
   toggleChannel() {
     this._channel1Bypass.mute = !this._channel1Bypass.mute;
-    this._channel2Bypass.mute = !this._channel2Bypass.mute
+    this._channel2Bypass.mute = !this._channel2Bypass.mute;
     this._activeChannel = this._activeChannel === 1 ? 2 : 1;
   }
+
   get muted() {
-    return this._isMuted
+    return this._isMuted;
   }
+
   set muted(value) {
     this._ampBypass.mute = value;
   }
+
   get input() {
     return this._input;
   }
+
   get output() {
     return this._output;
   }
+
   getInputGain() {
     return this._input.level;
   }
+
   getOutputGain() {
-    return this._output.level
+    return this._output.level;
   }
+
   get activeChannel() {
     return this._activeChannel;
   }
 
-  setEffectProperty({channel, componentName, componentProperty, value}) {
-    const componentDefinition = AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS[componentName];
-    if (!componentDefinition) {console.error(`component definition for ${componentName} not found in AmpGenerator`); return;}
-    const selectedChannel = this[`_channel${channel}`];
-    selectedChannel.setEffectProperty({componentName, componentProperty, value});
-  }
+  // setEffectProperty({channel, componentName, componentProperty, value}) {
+  //   const componentDefinition = AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS[componentName];
+  //   if (!componentDefinition) {console.error(`component definition for ${componentName} not found in AmpGenerator`); return;}
+  //   const selectedChannel = this[`_channel${channel}`];
+  //   selectedChannel.setEffectProperty({componentName, componentProperty, value});
+  // }
+
   getEffectProperty({channel, componentName, componentProperty}) {
     const selectedChannel = this[`_channel${channel}`];
     const component = selectedChannel.components[componentName];
     return component[componentProperty];
   }
+
   getCabinetProperty({property}) {
     return this._cabinet[property];
   }
+
   setCabinetProperty({property, value}) {
     this._cabinet[property] = value;
   }
+
   getChannelKnobTypeComponents({channel}) {
     const selectedChannel = this[`_channel${channel}`];
     return filterChannelComponentsByType({ampType: this._ampType, channelNumber: channel, selectedChannel, settingType: AMP_SETTING_TYPE.KNOB});
   }
+
   getChannelDistortions({channel}) {
     const selectedChannel = this[`_channel${channel}`];
     const distoTypesComponentNames = AMP_TYPES_SCHEMAS[this._ampType][`CHANNEL_${channel}`].filter((comp)=> comp.type === AMP_COMPONENT_TYPE.DISTORTION);
@@ -167,11 +174,12 @@ export default class Amp {
     }));
     return selectedDistos;
   }
-  setAmpChannelEffectProperty({channel, componentName, componentProperty, value}){
+
+  setAmpChannelEffectProperty({channel, componentName, componentProperty, value}) {
     const selectedChannel = this[`_channel${channel}`];
     const component = selectedChannel.components[componentName];
     const componentProp = component[componentProperty];
-    const componentDefinition = AMP_TYPES_SCHEMAS[this._ampType][`CHANNEL_${channel}`].find((el)=>el.name === componentName);
+    const componentDefinition = AMP_TYPES_SCHEMAS[this._ampType][`CHANNEL_${channel}`].find((el)=> el.name === componentName);
     const componentPropDefinition = componentDefinition.settingsList.find((prop)=> prop.name === componentProperty);
     if (!component) {console.error(`component ${componentName} not found in amp`); return;}
     if (componentProp === undefined) {console.error(`componentProperty ${componentProperty} not found in component ${componentName}`); return;}
@@ -180,12 +188,13 @@ export default class Amp {
 
     component[componentProperty] = value;
     console.log(`∙ Setting to channel ${channel}, ${componentName} component, ${componentProperty} prop the value ${value}`);
-  
   }
-  setAmpInputEffectProperty({componentProperty, value}){
+
+  setAmpInputEffectProperty({componentProperty, value}) {
     this._input[componentProperty] = value;
   }
-  setAmpOutputEffectProperty({componentProperty, value}){
+
+  setAmpOutputEffectProperty({componentProperty, value}) {
     this._output[componentProperty] = value;
   }
 
@@ -199,20 +208,29 @@ export default class Amp {
     }));
     return selectedDistos;
   }
+
   getDistortionTypes() {
     return Object.values(DISTORTION_TYPES);
   }
+
   getSelectedCabinet() {
     return this._cabinet[AMP_SETTING_NAME.CABINET_IMPULSE];
     // return this._components[AMP_COMPONENT_NAME.CABINET][AMP_SETTING_NAME.CABINET_IMPULSE];
   }
+
   getCabinetTypes() {
     return Object.keys(CABINET_FILES);
   }
+
   getCabinetSettings() {
     const component = AMP_TYPES_SCHEMAS[this._ampType].CABINET;
     return component.settingsList.filter((setting)=> setting.type === AMP_SETTING_TYPE.CABINET_KNOB);
   }
+
+  get preset() {
+    return AMP_TYPES_PRESETS[this._ampType];
+  }
+
   set preset(presetName) {
     const presetComponents = AMP_TYPES_PRESETS[this._ampType][presetName].COMPONENTS;
     Object.keys(presetComponents).forEach((component)=> {

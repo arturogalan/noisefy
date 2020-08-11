@@ -3,7 +3,7 @@ import { normalize } from '../../util';
 import { CABINET_FILES } from '../factories/CabinetGenerator';
 
 const CABINET_LOCAL_FILES = {};
-let defaultCabinet = undefined;
+let defaultCabinet;
 for (const type in CABINET_FILES) {
   if (!defaultCabinet) defaultCabinet = type;
   CABINET_LOCAL_FILES[type] = CABINET_FILES[type];
@@ -55,6 +55,10 @@ export default class Cabinet extends MultiAudioNode {
     this.gain = 5;
     // set by default the first cabinet we found in definition
     this._cabinetImpulse = defaultCabinet;
+  }
+
+  get responseFile() {
+    return this.responseFile;
   }
 
   set responseFile(file) {
@@ -141,6 +145,7 @@ export default class Cabinet extends MultiAudioNode {
   get gain() {
     return this._gain;
   }
+
   set gain(value) {
     const normalizedValue = parseFloat(normalize(1, value));
     const wetValue = Math.cos(normalizedValue * Math.PI / 2);

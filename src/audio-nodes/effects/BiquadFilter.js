@@ -32,9 +32,11 @@ export default class BiquadFilter extends SingleAudioNode {
     this.node = this.audioContext.createBiquadFilter();
     this.type = filterType;
   }
+
   get type() {
     return this._type;
   }
+
   set type(typeRequested) {
     if (Object.values(BIQUAD_FILTER_TYPES).includes(typeRequested)) {
       this._type = typeRequested;
@@ -44,24 +46,30 @@ export default class BiquadFilter extends SingleAudioNode {
       throw new Error(`The biquadFilter type ${typeRequested} is not included in the filters set.`);
     }
   }
+
   // Setters and getters for public properties
   get gain() {
     return this._gain;
   }
+
   set gain(gain) {
     this._gain = parseFloat(gain);
     this.node.gain.value = this._gain;
   }
+
   get frequency() {
     return this._frequency;
   }
+
   set frequency(frequency) {
     this._frequency = frequency;
     this.node.frequency.value = this._frequency;
   }
+
   get Q() {
     return this._Q;
   }
+
   set Q(value) {
     this._Q = value;
     this.node.Q.value = this.Q;

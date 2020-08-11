@@ -14,7 +14,6 @@ const capitalize = function(string) {
  * The output node is the last audio-node in the las component effect, the next effect will be connected to this node.
  */
 export default class MultiEffectNode {
-
   constructor(audioContext) {
     // Set the audio-context.
     this._audioContext = audioContext;
@@ -38,7 +37,7 @@ export default class MultiEffectNode {
 
   set components(compsArray) {
     this._components = {};
-    let prevComponent = undefined;
+    let prevComponent;
     compsArray.forEach((component, index)=> {
       const initializatedComponent = new Noisefy[capitalize(component.type)](this._audioContext);
       console.log('creating ', capitalize(component.type));
@@ -46,7 +45,7 @@ export default class MultiEffectNode {
         console.log('initializing', setting.name, 'setting to value:', setting.value);
         initializatedComponent[setting.name] = setting.value;
       }
-      //If first or last also input or output of the multiEffectNode
+      // If first or last also input or output of the multiEffectNode
       if (index === 0) {
         this.input = initializatedComponent;
       }
@@ -54,35 +53,37 @@ export default class MultiEffectNode {
         this.output = initializatedComponent;
       }
       // Connect to the previous component
-      if(prevComponent) {
-        prevComponent.connect(initializatedComponent)
+      if (prevComponent) {
+        prevComponent.connect(initializatedComponent);
       }
       prevComponent = initializatedComponent;
       this._components[component.name] = initializatedComponent;
-    })
+    });
   }
 
-  setEffectProperty({componentName, componentProperty, value}) {
-    const component = this._components[componentName];
-    const componentProp = component[componentProperty];
-    const componentPropDefinition = componentDefinition.settingsList.find((prop)=> prop.name === componentProperty);
-    if (!component) {console.error(`component ${componentName} not found in amp`); return;}
-    if (componentProp === undefined) {console.error(`componentProperty ${componentProperty} not found in component ${componentName}`); return;}
-    if (componentPropDefinition === undefined) {console.error(`componentPropDefinition ${componentProperty} not found in AmpGenerator component ${componentName}`); return;}
+  // setEffectProperty({componentName, componentProperty, value}) {
+  //   const component = this._components[componentName];
+  //   const componentProp = component[componentProperty];
+  //   const componentPropDefinition = componentDefinition.settingsList.find((prop)=> prop.name === componentProperty);
+  //   if (!component) {console.error(`component ${componentName} not found in amp`); return;}
+  //   if (componentProp === undefined) {console.error(`componentProperty ${componentProperty} not found in component ${componentName}`); return;}
+  //   if (componentPropDefinition === undefined) {console.error(`componentPropDefinition ${componentProperty} not found in AmpGenerator component ${componentName}`); return;}
 
-    const normalize = componentPropDefinition.normalize || ((val)=> val);
-    component[componentProperty] = normalize(value);
-    console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
-  }
+  //   const normalize = componentPropDefinition.normalize || ((val)=> val);
+  //   component[componentProperty] = normalize(value);
+  //   console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
+  // }
 
-  get components(){
+  get components() {
     return this._components;
   }
+
   getCompSettingValue({componentName, settingName}) {
     const comp = this._components[componentName];
     if (!comp) throw new Error(`The comp ${componentName} is not included in the effects list.`);
     return comp[settingName];
   }
+
   /**
    * The effect's audio-node getter.
    * @return {AudioNode} The audio-node used for the effect.

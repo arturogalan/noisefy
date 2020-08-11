@@ -28,6 +28,7 @@ export default class Boost extends MultiAudioNode {
     this.nodes.inputGainNode.gain.value = 1;
     this.nodes.outputGainNode.gain.value = 2;
   }
+
   /**
    * Getter for the effect's gain
    * @return {number}
@@ -46,6 +47,7 @@ export default class Boost extends MultiAudioNode {
 
     this.nodes.outputGainNode.gain.value = this._gain;
   }
+
   /**
    * Getter for the effect's tone
    * @return {number}

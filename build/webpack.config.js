@@ -1,90 +1,59 @@
-/* global __dirname, require, module*/
-
-// const webpack = require('webpack');
 const path = require('path');
-const env = require('yargs').argv.env; // use --env with webpack 2
-const pkg = require('./package.json');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-let libraryName = pkg.name;
+// This is the main configuration object.
+// Here you write different options and tell Webpack what to do
+module.exports = {
 
-let outputFile;
-let mode;
+  // Path to your entry point. From this file Webpack will begin his work
+  entry: './src/index.js',
 
-if (env === 'build') {
-  mode = 'production';
-  outputFile = libraryName + '.min.js';
-} else {
-  mode = 'development';
-  outputFile = libraryName + '.js';
-}
-
-const createLintingRule = () => ({
-  test: /\.(js|vue)$/,
-  loader: 'eslint-loader',
-  enforce: 'pre',
-  include: [resolve('src'), resolve('test')],
-  options: {
-    formatter: require('eslint-friendly-formatter'),
-    emitWarning: true,
-    failOnError: mode === 'production',
-    fix: mode !== 'production',
-  }
-})
-
-const config = {
-  mode: mode,
-  entry: __dirname + '/src/index.js',
-  devtool: 'inline-source-map',
+  // Path and filename of your result bundle.
+  // Webpack will bundle all JavaScript into this file
   output: {
-    path: __dirname + '/lib',
-    filename: outputFile,
-    library: libraryName,
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-    globalObject: "typeof self !== 'undefined' ? self : this"
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'noisefy.js'
   },
+
+  // Default mode for Webpack is production.
+  // Depending on mode Webpack will apply different things
+  // on final bundle. For now we don't need production's JavaScript 
+  // minifying and other thing so let's set mode to development
+  mode: 'development',
   module: {
     rules: [
-      ...createLintingRule(),
       {
-        test: /(\.jsx|\.js)$/,
-        loader: 'babel-loader',
-        exclude: /(node_modules|bower_components)/
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          formatter: require('eslint-friendly-formatter'),
+          emitWarning: true,
+          failOnError: true,
+          fix: true,
+        }
       },
       {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.(wav|ogg)$/i,
         use: [
           {
             loader: 'url-loader',
+            options: {
+              limit: 8192,
+            },
           },
         ],
-      },
-      {
-        test: /(\.jsx|\.js)$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.opts$/,
-        loader: 'ignore-loader'
-      },
-    ]
+      }
+    ],
   },
-  resolve: {
-    modules: [path.resolve('./node_modules'), path.resolve('./src/**')],
-    extensions: ['.json', '.js']
-  },
-  // plugins: [
-  //   // copy custom static assets
-  //   new CopyWebpackPlugin([
-  //     {
-  //       from: path.resolve(__dirname, './assets'),
-  //       to: 'assets',
-  //       ignore: ['.*'],
-  //     },
-  //   ]),
-  // ]
 };
-
-module.exports = config;

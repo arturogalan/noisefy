@@ -14,11 +14,13 @@ export default class Input extends SingleAudioNode {
   get input() {
     return this.node;
   }
+
   set input(stream) {
     // Create a media-stream source, by default in mono
-    let input = this.audioContext.createMediaStreamSource(stream);
+    const input = this.audioContext.createMediaStreamSource(stream);
     this.node = this._isConvertedToMono ? convertToMono(this.audioContext, input) : input;
   }
+
   /**
      * Get your microphone sound as input.
      * @return {Promise<AudioNode>} Resolves when you accept to use the microphone.
@@ -90,6 +92,7 @@ export default class Input extends SingleAudioNode {
       }
     });
   }
+
   /**
      * Connect the effect to other effects or native audio-nodes.
      * @param  {AudioNode|SingleAudioNode|MultiAudioNode} node
