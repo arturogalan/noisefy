@@ -18,9 +18,10 @@ export default class Presence extends SingleAudioNode {
   get gain() {
     return this._gain;
   }
+
   set gain(gain) {
-    const normalizedValue = parseFloat(gain);
-    this._gain = (normalizedValue - 5) * 2;
-    this.node.gain.value = this._gain;
+    const normalizedValue = (parseFloat(gain) - 5) * 2;
+    this.node.gain.value = normalizedValue;
+    this._gain = gain;
   }
 }

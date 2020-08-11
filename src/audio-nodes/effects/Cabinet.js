@@ -1,12 +1,13 @@
 import MultiAudioNode from '../MultiAudioNode';
-import {CABINET_TYPES} from '../factories/CabinetGenerator';
-const irfRequiredFiles = {};
-Object.keys(CABINET_TYPES).forEach((cabinetImpulseKey)=> {
-  irfRequiredFiles[cabinetImpulseKey] = {
-    name: cabinetImpulseKey,
-    fileUrl: require(`../../assets/impulses/cabinet/${CABINET_TYPES[cabinetImpulseKey]}`),
-  };
-});
+import { normalize } from '../../util';
+import { CABINET_FILES } from '../factories/CabinetGenerator';
+
+const CABINET_LOCAL_FILES = {};
+let defaultCabinet;
+for (const type in CABINET_FILES) {
+  if (!defaultCabinet) defaultCabinet = type;
+  CABINET_LOCAL_FILES[type] = CABINET_FILES[type];
+}
 
 const getInputResponseFile = function(file) {
   return fetch(file, {
@@ -51,23 +52,13 @@ export default class Cabinet extends MultiAudioNode {
     // Set the output gain-node as the output-node.
     this.output = this.nodes.outputGainNode;
 
-    // Set the default wetness to 0.5
-    // this.wet = 0.30901699437494745;
-    this.wet = 0.3;
+    this.gain = 5;
+    // set by default the first cabinet we found in definition
+    this._cabinetImpulse = defaultCabinet;
+  }
 
-
-    // Set the default level to 1
-    // this.level = 0.9510565162951535;
-    this.level = 0.9;
-
-    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).fileUrl;
-    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).name;
-  //   function setGain(value) {
-  //     var v1 = Math.cos(value * Math.PI / 2);
-  //     var v2 = Math.cos((1 - value) * Math.PI / 2);
-  //     directGain.gain.value = v1;
-  //     convolverGain.gain.value = v2;
-  // }
+  get responseFile() {
+    return this.responseFile;
   }
 
   set responseFile(file) {
@@ -83,8 +74,9 @@ export default class Cabinet extends MultiAudioNode {
   }
 
   set cabinetImpulse(requiredCabinetType) {
-    this.responseFile = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).fileUrl;
-    this._cabinetImpulse = (irfRequiredFiles[requiredCabinetType] || irfRequiredFiles.WARSHALL_1).name;
+    const file = require(`../../assets/impulses/cabinet/${CABINET_LOCAL_FILES[requiredCabinetType]}`);
+    this.responseFile = file;
+    this._cabinetImpulse = requiredCabinetType;
   }
 
   /**
@@ -143,7 +135,6 @@ export default class Cabinet extends MultiAudioNode {
     this.audioContext.decodeAudioData(buffer, (buffer)=> {
       // Set the internal buffer value
       this._buffer = buffer;
-
       // Set the buffer gain-node value
       this.nodes.convolverNode.buffer = this._buffer;
     }, (error)=> {
@@ -151,10 +142,16 @@ export default class Cabinet extends MultiAudioNode {
     });
   }
 
+  get gain() {
+    return this._gain;
+  }
+
   set gain(value) {
-    const wetValue = Math.cos(value * Math.PI / 2);
-    const levelValue = Math.cos((1 - value) * Math.PI / 2);
+    const normalizedValue = parseFloat(normalize(1, value));
+    const wetValue = Math.cos(normalizedValue * Math.PI / 2);
+    const levelValue = Math.cos((1 - normalizedValue) * Math.PI / 2);
     this.wet = wetValue;
     this.level = levelValue;
+    this._gain = normalizedValue;
   }
 }

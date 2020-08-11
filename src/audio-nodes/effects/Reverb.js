@@ -1,6 +1,7 @@
 import MultiAudioNode from '../MultiAudioNode';
 import {normalize} from '../../util';
 const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
+// const irf = require('../../assets/impulses/reverb/cardiod-rear-levelled.wav');
 
 const getInputResponseFile = function(file) {
   return fetch(file, {
@@ -54,6 +55,10 @@ export default class Reverb extends MultiAudioNode {
     this.responseFile = irf;
   }
 
+  get responseFile() {
+    return this.responseFile;
+  }
+
   set responseFile(file) {
     // TODO Get the file from mapping constants
     getInputResponseFile(file).then((buffer)=> {
@@ -80,7 +85,7 @@ export default class Reverb extends MultiAudioNode {
    */
   set wet(wetness) {
     // Set the internal wetness value
-    this._wet = parseFloat(wetness);
+    this._wet = parseFloat(normalize(1, wetness));
 
     // Set the new value for the wetness controll gain-node
     this.nodes.wetGainNode.gain.value = this._wet;
@@ -128,5 +133,18 @@ export default class Reverb extends MultiAudioNode {
     }, (error)=> {
       console.error('Error decoding file:', error);
     });
+  }
+
+  get gain() {
+    return this._gain;
+  }
+
+  set gain(value) {
+    const normalizedValue = parseFloat(normalize(1, value));
+    const wetValue = Math.cos(normalizedValue * Math.PI / 2);
+    const levelValue = Math.cos((1 - normalizedValue) * Math.PI / 2);
+    this.wet = wetValue;
+    this.level = levelValue;
+    this._gain = normalizedValue;
   }
 }

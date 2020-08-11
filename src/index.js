@@ -1,7 +1,8 @@
 
+import Boost from './audio-nodes/effects/Boost';
 import Cabinet from './audio-nodes/effects/Cabinet';
-import Equalizer from './audio-nodes/effects/Equalizer';
 import Delay from './audio-nodes/effects/Delay';
+import Equalizer from './audio-nodes/effects/Equalizer';
 import Flanger from './audio-nodes/effects/Flanger';
 import Input from './audio-nodes/effects/Input';
 import Output from './audio-nodes/effects/Output';
@@ -14,15 +15,17 @@ import LowshelfFilter from './audio-nodes/effects/LowshelfFilter';
 import PeakingFilter from './audio-nodes/effects/PeakingFilter';
 import HighpassFilter from './audio-nodes/effects/HighpassFilter';
 
-import {hasAudioContext, hasGetUserMedia, deviceList, deviceListHandler} from './util';
+import { hasAudioContext, hasGetUserMedia, deviceList, deviceListHandler } from './util';
 import Distortion from './audio-nodes/effects/Distortion';
-import {DISTORTION_TYPES, DISTORTION_PRESETS, CLEAN_PRESETS} from './audio-nodes/factories/DistortionGenerator';
+import { DISTORTION_TYPES, DISTORTION_PRESETS, CLEAN_PRESETS } from './audio-nodes/factories/DistortionGenerator';
 import Amp from './audio-nodes/amp/Amp';
-import {AMP_TYPES, AMP_COMPONENT_NAME, AMP_SETTING_NAME} from './audio-nodes/factories/AmpGenerator';
-import {BIQUAD_FILTER_TYPES} from './audio-nodes/factories/FiltersGenerator';
-import {PRESET_TYPES} from './audio-nodes/factories/PresetGenerator';
+import { AMP_TYPES, AMP_COMPONENT_NAME, AMP_SETTING_NAME } from './audio-nodes/factories/AmpGenerator';
+
+import { BIQUAD_FILTER_TYPES } from './audio-nodes/factories/FiltersGenerator';
+import { PRESET_TYPES } from './audio-nodes/factories/PresetGenerator';
 
 export {
+  Boost,
   Cabinet,
   Equalizer,
   Delay,

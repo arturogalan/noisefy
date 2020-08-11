@@ -1,5 +1,5 @@
-import {AMP_COMPONENT_NAME, AMP_TYPES} from './AmpGenerator';
-import {CABINET_TYPES} from './CabinetGenerator';
+import { AMP_COMPONENT_NAME, AMP_TYPES } from './AmpGenerator';
+import { DEFAULT_CABINET } from './CabinetGenerator';
 
 
 export const PRESET_TYPES = {
@@ -208,7 +208,7 @@ export const AMP_TYPES_PRESETS = {
           settingsList: [
             {
               name: 'cabinetImpulse',
-              value: CABINET_TYPES.WARSHALL_1,
+              value: DEFAULT_CABINET,
             },
             {
               name: 'gain',

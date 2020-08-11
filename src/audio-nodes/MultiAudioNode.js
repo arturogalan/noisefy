@@ -21,6 +21,7 @@ export default class MultiAudioNode extends SingleAudioNode {
   get output() {
     return this._outputNode;
   }
+
   // When creating and object that extends this class, you have to set this output property pointing to your main audioNode
   // to properly connect other elements throw the connect method beyond
   set output(output) {
