@@ -70,7 +70,6 @@ const getDistortionTypeGenerateFunction = (type)=> {
     },
     [DISTORTION_TYPES.HIGH_GAIN_MODERN]: (intens)=> {
       const intensity = 1 / (1 + Math.pow((intens / 2), 4));
-      // console.log('internal intensity', intensity)
       const amount = 22050;
       const curve = new Float32Array(amount);
 

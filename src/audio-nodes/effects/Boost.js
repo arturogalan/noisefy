@@ -1,5 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
-import {normalize, scale} from '../../util';
+import {normalize, scale, trace} from '../../util';
 import { DISTORTION_TYPES, getDistortionTypeGenerateFunction } from '../factories/DistortionGenerator';
 
 export default class Boost extends MultiAudioNode {
@@ -65,7 +65,7 @@ export default class Boost extends MultiAudioNode {
     this._tone = parseFloat(normalize(1, tone));
 
     // Between 2000 and 4000?
-    // console.log('frequency boost', scale(this._tone, 0, 1, 2000, 4000));
+    trace('frequency boost', scale(this._tone, 0, 1, 2000, 4000));
     this.nodes.filterNode.frequency.value = scale(this._tone, 0, 1, 2000, 4000); // 3317;
   }
 }

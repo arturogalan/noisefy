@@ -68,6 +68,14 @@ const denormalize = (max, value)=> {
 const scale = (num, inMin, inMax, outMin, outMax)=> {
   return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 };
+
+const trace = (...args)=> {
+  const isVerbose = false;
+  if (isVerbose) {
+    // 🎼 🎵 🎶
+    console.log('🎵', ...args);
+  }
+};
 export {
   normalize,
   denormalize,
@@ -79,4 +87,5 @@ export {
   deviceListHandler,
   validateValues,
   convertToMono,
+  trace,
 };

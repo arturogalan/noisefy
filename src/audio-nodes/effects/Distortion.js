@@ -1,5 +1,5 @@
 import SingleAudioNode from '../SingleAudioNode';
-import { validateValues } from '../../util';
+import { validateValues, trace } from '../../util';
 import { DISTORTION_TYPES, getDistortionTypeGenerateFunction } from '../factories/DistortionGenerator';
 /**
  * The audio-effects distortion class.
@@ -31,7 +31,7 @@ export default class Distortion extends SingleAudioNode {
     const scale = (maxv - minv) / (maxp - minp);
     // end of logarithmic adjustment
     const normalizedIntensity = Math.exp(minv + scale * (value - minp));
-    console.log('setting', this.distortionType, 'normalized intensity', normalizedIntensity);
+    trace('setting', this.distortionType, 'normalized intensity', normalizedIntensity);
     this.node.curve = getDistortionTypeGenerateFunction(this.distortionType)(normalizedIntensity);
     this._intensity = intensity;
   }
@@ -43,8 +43,8 @@ export default class Distortion extends SingleAudioNode {
   set distortionType(distortionTypeRequested) {
     if (Object.values(DISTORTION_TYPES).includes(distortionTypeRequested)) {
       this._distortionType = distortionTypeRequested;
-      // Force recalculation of intensity and curve
-      this.intensity = this._intensity;
+      // Force recalculation of intensity and curve if there is intensity
+      if (this._intensity) {this.intensity = this._intensity;}
     } else {
       throw new Error(`The distorion type ${distortionTypeRequested} is not included in the distortionTypes set.`);
     }
