@@ -1,5 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
-import {normalize} from '../../util';
+import {trace, scale, normalize} from '../../util';
 const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
 // const irf = require('../../assets/impulses/reverb/cardiod-rear-levelled.wav');
 
@@ -84,11 +84,12 @@ export default class Reverb extends MultiAudioNode {
    * @param  {number} wetness
    */
   set wet(wetness) {
-    // Set the internal wetness value
-    this._wet = parseFloat(normalize(1, wetness));
+    // Set the internal wetness value 0 to 1
+    this._wet = wetness;
+    trace('internal wetness', scale(this._wet, 0, 10, 0, 1));
 
     // Set the new value for the wetness controll gain-node
-    this.nodes.wetGainNode.gain.value = this._wet;
+    this.nodes.wetGainNode.gain.value = scale(this._wet, 0, 10, 0, 1);
   }
 
   /**
@@ -105,10 +106,11 @@ export default class Reverb extends MultiAudioNode {
    */
   set level(level) {
     // Set the internal level value
-    this._level = parseFloat(normalize(1, level));
+    this._level = level;
+    trace('internal level', scale(this._level, 0, 10, 0, 1));
 
     // Set the delayTime value of the delay-node
-    this.nodes.levelGainNode.gain.value = this._level;
+    this.nodes.levelGainNode.gain.value = scale(this._level, 0, 10, 0, 1);
   }
 
   /**
