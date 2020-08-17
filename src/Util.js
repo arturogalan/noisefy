@@ -11,7 +11,6 @@ const createAudioContext = function() {
 const deviceList = function() {
   return navigator.mediaDevices.enumerateDevices().then((devices)=> {
     return Promise.resolve(devices.map((device)=> {
-      console.log('🏚', devices);
       const [kind, type, direction] = device.kind.match(/(\w+)(input|output)/i);
       return {
         kind,
