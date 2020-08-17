@@ -1,26 +1,17 @@
-const win = typeof window !== 'undefined' ? window : global;
-/**
- * Check if the current browser supports getUserMedia.
- // https://stackoverflow.com/questions/37673000/typeerror-getusermedia-called-on-an-object-that-does-not-implement-interface
- */
-const getUserMedia = navigator.getUserMedia ||
-navigator.mozGetUserMedia ||
-navigator.webkitGetUserMedia ||
-navigator.msGetUserMedia;
-const hasGetUserMedia = !!getUserMedia;
-/**
- * Check if the current browser supports the web-audio-api .
- */
-const audioContext = win.AudioContext ||
-  win.webkitAudioContext ||
-  win.mozAudioContext ||
-  win.msAudioContext;
+import {
+  AudioContext,
+} from 'standardized-audio-context';
 
-const hasAudioContext = !!audioContext;
+const createAudioContext = function() {
+  return new AudioContext({
+    latencyHint: 'interactive',
+  });
+};
 
 const deviceList = function() {
   return navigator.mediaDevices.enumerateDevices().then((devices)=> {
     return Promise.resolve(devices.map((device)=> {
+      console.log('🏚', devices);
       const [kind, type, direction] = device.kind.match(/(\w+)(input|output)/i);
       return {
         kind,
@@ -80,9 +71,7 @@ export {
   normalize,
   denormalize,
   scale,
-  hasGetUserMedia,
-  getUserMedia,
-  hasAudioContext,
+  createAudioContext,
   deviceList,
   deviceListHandler,
   validateValues,

@@ -1,6 +1,6 @@
 import MultiAudioNode from '../MultiAudioNode';
 import {trace, scale, normalize} from '../../util';
-const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
+const irf = require('../../assets/impulses/reverb/hall-reverb.wav');
 // const irf = require('../../assets/impulses/reverb/cardiod-rear-levelled.wav');
 
 const getInputResponseFile = function(file) {
@@ -126,14 +126,12 @@ export default class Reverb extends MultiAudioNode {
    * @param  {Stream} buffer
    */
   set buffer(buffer) {
-    this.audioContext.decodeAudioData(buffer, (buffer)=> {
+    this.audioContext.decodeAudioData(buffer).then((decodedBuffer)=> {
       // Set the internal buffer value
-      this._buffer = buffer;
+      this._buffer = decodedBuffer;
 
       // Set the buffer gain-node value
       this.nodes.convolverNode.buffer = this._buffer;
-    }, (error)=> {
-      console.error('Error decoding file:', error);
     });
   }
 

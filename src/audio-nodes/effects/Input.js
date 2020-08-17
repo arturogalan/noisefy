@@ -1,94 +1,50 @@
 
 import SingleAudioNode from '../SingleAudioNode';
 import MultiAudioNode from '../MultiAudioNode';
-import {hasGetUserMedia, convertToMono} from '../../util';
+import {
+  MediaStreamAudioSourceNode,
+} from 'standardized-audio-context';
+// import {convertToMono} from '../../util';
+
 
 export default class Input extends SingleAudioNode {
   constructor(audioContext, mono = true) {
     super(audioContext);
     this._deferredConnects = [];
     this._hasPermissions = false;
-    this._isConvertedToMono = true;
+    this._isConvertedToMono = mono;
   }
 
   get input() {
     return this.node;
   }
 
-  set input(stream) {
-    // Create a media-stream source, by default in mono
-    const input = this.audioContext.createMediaStreamSource(stream);
-    this.node = this._isConvertedToMono ? convertToMono(this.audioContext, input) : input;
+  set input(streamSource) {
+    this.node = streamSource;
   }
 
-  /**
-     * Get your microphone sound as input.
-     * @return {Promise<AudioNode>} Resolves when you accept to use the microphone.
-     */
-  getUserMedia() {
+  activateInput() {
     return new Promise((resolve, reject)=> {
-      if (hasGetUserMedia) {
-        // Firefox
-        if (navigator.mozGetUserMedia) {
-          navigator.mediaDevices.getUserMedia({
-            audio: {
-              optional: [
-                {
-                  'echoCancellation': false,
-                },
-                {
-                  'mozNoiseSuppression': false,
-                },
-                {
-                  'mozAutoGainControl': false,
-                },
-              ],
-            },
-          }, (stream)=> {
-            this.input = stream;
-            this._hasPermissions = true;
-            window.stream = stream; // make stream available to console
-            // Connect the deffered connects
-            this._deferredConnects.forEach((node)=> {
-              this.connect(node);
-            });
-
-            resolve(stream);
-          }, (error)=> {
-            reject(error);
+      try {
+        navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: false,
+            autoGainControl: false,
+            noiseSuppression: false,
+            latency: 0,
+          },
+        }).then((mediaStream)=> {
+          this.node = new MediaStreamAudioSourceNode(this.audioContext, {
+            mediaStream,
           });
-        // Chrome
-        } else {
-          navigator.getUserMedia({
-            audio: {
-              optional: [
-                {
-                  'echoCancellation': false,
-                },
-                {
-                  'mozNoiseSuppression': false,
-                },
-                {
-                  'mozAutoGainControl': false,
-                },
-              ],
-            },
-          }, (stream)=> {
-            this.input = stream;
-            this._hasPermissions = true;
-            window.stream = stream; // make stream available to console
-            // Connect the deffered connects
-            this._deferredConnects.forEach((node)=> {
-              this.connect(node);
-            });
-
-            resolve(stream);
-          }, (error)=> {
-            reject(error);
-          });
-        }
-      } else {
-        reject(Error('Your browser does not support the use of user-media, please upgrade or use another browser!'));
+          this._hasPermissions = true;
+          if (this.audioContext.state === 'suspended') {
+            this.audioContext.resume();
+          }
+          resolve();
+        });
+      } catch (err) {
+        reject(err);
       }
     });
   }
@@ -121,18 +77,6 @@ export default class Input extends SingleAudioNode {
           resolve(devices.filter((device)=> {
             return device.kind && device.kind === 'audioinput';
           }));
-        }).catch((error)=> {
-          reject(error);
-        });
-      } else {
-        this.getUserMedia().then(()=> {
-          navigator.mediaDevices.enumerateDevices().then((devices)=> {
-            resolve(devices.filter((device)=> {
-              return device.kind && device.kind === 'audioinput';
-            }));
-          }).catch((error)=> {
-            reject(error);
-          });
         }).catch((error)=> {
           reject(error);
         });

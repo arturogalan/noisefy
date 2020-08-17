@@ -1,6 +1,6 @@
 {
   "name": "noisefy",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "JS library to wrap web audio funny effects",
   "author": "Arturo Galan <arturo.galan@gmail.com>",
   "license": "MIT",
@@ -62,5 +62,8 @@
   "nyc": {
     "sourceMap": false,
     "instrument": false
+  },
+  "dependencies": {
+    "standardized-audio-context": "^24.1.25"
   }
 }

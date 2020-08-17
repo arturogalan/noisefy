@@ -41,7 +41,6 @@ export default class Amp {
       throw new Error(`The amp type ${ampTypeRequested} is not included in the ampTypes set.`);
     }
     trace('Creating amp of type: ', ampTypeRequested);
-
     this._channel1 = new MultiEffectNode(this._audioContext);
     this._channel1.components = AMP_TYPES_SCHEMAS[ampTypeRequested].CHANNEL_1;
     this._channel2 = new MultiEffectNode(this._audioContext);
@@ -99,7 +98,6 @@ export default class Amp {
     this._channel2Bypass.level = 1;
     this._channel2Bypass.mute = true;
     this._activeChannel = 1;
-
     // By default amp muted
     this.muted = true;
     // Set the type
@@ -139,13 +137,6 @@ export default class Amp {
   get activeChannel() {
     return this._activeChannel;
   }
-
-  // setEffectProperty({channel, componentName, componentProperty, value}) {
-  //   const componentDefinition = AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS[componentName];
-  //   if (!componentDefinition) {console.error(`component definition for ${componentName} not found in AmpGenerator`); return;}
-  //   const selectedChannel = this[`_channel${channel}`];
-  //   selectedChannel.setEffectProperty({componentName, componentProperty, value});
-  // }
 
   getEffectProperty({channel, componentName, componentProperty}) {
     const selectedChannel = this[`_channel${channel}`];
