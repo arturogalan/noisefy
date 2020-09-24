@@ -1,5 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
-import {normalize} from '../../util';
+import {trace, scale} from '../../util';
 
 /**
  * The audio-effects flanger class.
@@ -69,10 +69,12 @@ export default class Flanger extends MultiAudioNode {
    */
   set delay(delay) {
     // Set the internal delay value 0.001 to 0.02
-    this._delay = parseFloat(normalize(0.02, delay));
+    this._delay = delay;
+    const normalizedValue = scale(this._delay, 0, 10, 0.001, 0.02);
+    trace('internal delayTime', normalizedValue);
 
     // Set the new value for the delay-node
-    this.nodes.delayNode.delayTime.value = this._delay;
+    this.nodes.delayNode.delayTime.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -88,11 +90,13 @@ export default class Flanger extends MultiAudioNode {
    * @param  {number} depth
    */
   set depth(depth) {
-    // Set the internal depth value
-    this._depth = parseFloat(normalize(0.02, depth));
+    // Set the internal depth value 0.001 to 0.02
+    this._depth = depth;
+    const normalizedValue = scale(this._depth, 0, 10, 0.001, 0.02);
+    trace('internal depth', normalizedValue);
 
     // Set the gain value of the gain-node
-    this.nodes.gainNode.gain.value = this._depth;
+    this.nodes.gainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -109,10 +113,12 @@ export default class Flanger extends MultiAudioNode {
    */
   set feedback(feedback) {
     // Set the internal feedback value 0 to 1
-    this._feedback = parseFloat(normalize(1, feedback));
+    this._feedback = feedback;
+    const normalizedValue = scale(this._feedback, 0, 10, 0, 1);
 
+    trace('internal feedback', normalizedValue);
     // Set the feedback gain-node value
-    this.nodes.feedbackGainNode.gain.value = this._feedback;
+    this.nodes.feedbackGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -129,9 +135,11 @@ export default class Flanger extends MultiAudioNode {
    */
   set speed(speed) {
     // Set the internal speed value
-    this._speed = parseFloat(normalize(1, speed));
+    this._speed = speed;
+    const normalizedValue = scale(this._speed, 0, 10, 0, 1);
 
+    trace('internal speed', normalizedValue);
     // Set the speed gain-node value
-    this.nodes.oscillatorNode.frequency.value = this._speed;
+    this.nodes.oscillatorNode.frequency.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 }

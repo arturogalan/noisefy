@@ -1,4 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
+import { trace } from '../../util';
 
 /**
  * The audio-effects Basic Equalizer class.
@@ -41,10 +42,10 @@ export default class Equalizer extends MultiAudioNode {
   }
 
   set trebbleGain(gain) {
-    // console.log('trebble gain raw: ', gain);
+    // trace('trebble gain raw: ', gain);
     const normalizedValue = (parseFloat(gain) - 10) * 10;
-    console.log('trebble gain normalized: ', normalizedValue);
-    this.nodes.trebbleFilterNode.gain.value = normalizedValue;
+    trace('trebble gain normalized: ', normalizedValue);
+    this.nodes.trebbleFilterNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
     this._trebbleGain = gain;
   }
 
@@ -54,8 +55,8 @@ export default class Equalizer extends MultiAudioNode {
 
   set middleGain(gain) {
     const normalizedValue = (parseFloat(gain) - 5) * 4;
-    // console.log('middle gain', normalizedValue);
-    this.nodes.middleFilterNode.gain.value = normalizedValue;
+    // trace('middle gain', normalizedValue);
+    this.nodes.middleFilterNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
     this._middleGain = gain;
   }
 
@@ -65,8 +66,8 @@ export default class Equalizer extends MultiAudioNode {
 
   set bassGain(gain) {
     const normalizedValue = (parseFloat(gain) - 10) * 7;
-    this.nodes.bassFilterNode.gain.value = normalizedValue;
-    // console.log('bass gain', normalizedValue);
+    this.nodes.bassFilterNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
+    // trace('bass gain', normalizedValue);
     this._bassGain = gain;
   }
 }

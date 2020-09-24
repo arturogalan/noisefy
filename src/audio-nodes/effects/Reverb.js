@@ -1,7 +1,6 @@
 import MultiAudioNode from '../MultiAudioNode';
-import {normalize} from '../../util';
-const irf = require('../../assets/impulses/reverb/hall-reverb.ogg');
-// const irf = require('../../assets/impulses/reverb/cardiod-rear-levelled.wav');
+import {trace, scale, normalize} from '../../util';
+const irf = require('../../assets/impulses/reverb/hall-reverb.wav');
 
 const getInputResponseFile = function(file) {
   return fetch(file, {
@@ -18,10 +17,6 @@ const getInputResponseFile = function(file) {
  * This class lets you add a reverb effect.
  */
 export default class Reverb extends MultiAudioNode {
-  // _wet;
-  // _level;
-  // _buffer;
-
   constructor(audioContext) {
     super(audioContext);
 
@@ -84,11 +79,13 @@ export default class Reverb extends MultiAudioNode {
    * @param  {number} wetness
    */
   set wet(wetness) {
-    // Set the internal wetness value
-    this._wet = parseFloat(normalize(1, wetness));
+    // Set the internal wetness value 0 to 1
+    this._wet = wetness;
+    const normalizedValue = scale(this._wet, 0, 10, 0, 1);
+    trace('internal wetness', normalizedValue);
 
     // Set the new value for the wetness controll gain-node
-    this.nodes.wetGainNode.gain.value = this._wet;
+    this.nodes.wetGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -105,10 +102,13 @@ export default class Reverb extends MultiAudioNode {
    */
   set level(level) {
     // Set the internal level value
-    this._level = parseFloat(normalize(1, level));
+    this._level = level;
+    const normalizedValue = scale(this._wet, 0, 10, 0, 1);
+
+    trace('internal level', normalizedValue);
 
     // Set the delayTime value of the delay-node
-    this.nodes.levelGainNode.gain.value = this._level;
+    this.nodes.levelGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -124,14 +124,12 @@ export default class Reverb extends MultiAudioNode {
    * @param  {Stream} buffer
    */
   set buffer(buffer) {
-    this.audioContext.decodeAudioData(buffer, (buffer)=> {
+    this.audioContext.decodeAudioData(buffer).then((decodedBuffer)=> {
       // Set the internal buffer value
-      this._buffer = buffer;
+      this._buffer = decodedBuffer;
 
       // Set the buffer gain-node value
       this.nodes.convolverNode.buffer = this._buffer;
-    }, (error)=> {
-      console.error('Error decoding file:', error);
     });
   }
 

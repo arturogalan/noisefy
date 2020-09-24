@@ -1,5 +1,4 @@
 import SingleAudioNode from '../SingleAudioNode';
-
 /**
  * The audio-effects volume class.
  * This class lets you change the volume of the audio signal.
@@ -14,7 +13,7 @@ export default class Volume extends SingleAudioNode {
     // Create the gain-node which we'll use to change the volume.
     this.node = this.audioContext.createGain();
     // The initial volume level is 0
-    this.level = 0;
+    this.level = 1;
     // not muted
     this._mute = false;
   }
@@ -47,7 +46,8 @@ export default class Volume extends SingleAudioNode {
     if (this._mute && vol > 0) {
       this._levelBeforeMute = volume;
     } else {
-      this.node.gain.value = vol / this._undersampling;
+      const normalizedValue = vol / this._undersampling;
+      this.node.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
       this._mute = (vol === 0);
     }
   }

@@ -96,7 +96,7 @@ export default class Cabinet extends MultiAudioNode {
     this._wet = parseFloat(wetness);
 
     // Set the new value for the wetness controll gain-node
-    this.nodes.wetGainNode.gain.value = this._wet;
+    this.nodes.wetGainNode.gain.setValueAtTime(this._wet, this.audioContext.currentTime);
   }
 
   /**
@@ -116,7 +116,7 @@ export default class Cabinet extends MultiAudioNode {
     this._level = parseFloat(level);
 
     // Set the delayTime value of the delay-node
-    this.nodes.levelGainNode.gain.value = this._level;
+    this.nodes.levelGainNode.gain.setValueAtTime(this._level, this.audioContext.currentTime);
   }
 
   /**

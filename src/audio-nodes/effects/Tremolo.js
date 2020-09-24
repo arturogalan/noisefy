@@ -44,10 +44,10 @@ export default class Tremolo extends SingleAudioNode {
    * @param  {number} speed
    */
   set speed(speed) {
-    // Set the internal speed value
+    // Set the internal speed value 0 to 10 no scaling
     this._speed = parseFloat(speed);
 
     // Set the new value for the oscillator frequency
-    this.nodes.oscillatorNode.frequency.value = this._speed;
+    this.nodes.oscillatorNode.frequency.setValueAtTime(this._speed, this.audioContext.currentTime);
   }
 }

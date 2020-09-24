@@ -51,7 +51,7 @@ export const AMP_TYPES_SCHEMAS = {
       settingsList: [
         {
           name: 'level',
-          value: 1.6,
+          value: 3,
           type: AMP_SETTING_TYPE.INPUT,
         },
         {
@@ -68,7 +68,7 @@ export const AMP_TYPES_SCHEMAS = {
       settingsList: [
         {
           name: 'level',
-          value: 3,
+          value: 1.5,
           type: AMP_SETTING_TYPE.OUTPUT,
         },
         // Values in gain from 0 to 1

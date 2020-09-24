@@ -3,6 +3,8 @@ import { DISTORTION_TYPES } from '../factories/DistortionGenerator';
 import { CABINET_FILES } from '../factories/CabinetGenerator';
 import { AMP_TYPES_PRESETS } from '../factories/PresetGenerator';
 import * as Noisefy from '../../index';
+import { trace } from '../../util';
+
 import MultiEffectNode from '../MultiEffectNode';
 
 const capitalize = function(string) {
@@ -38,8 +40,7 @@ export default class Amp {
     if (!Object.values(AMP_TYPES).includes(ampTypeRequested)) {
       throw new Error(`The amp type ${ampTypeRequested} is not included in the ampTypes set.`);
     }
-    console.log('Creating amp of type: ', ampTypeRequested);
-
+    trace('Creating amp of type: ', ampTypeRequested);
     this._channel1 = new MultiEffectNode(this._audioContext);
     this._channel1.components = AMP_TYPES_SCHEMAS[ampTypeRequested].CHANNEL_1;
     this._channel2 = new MultiEffectNode(this._audioContext);
@@ -47,36 +48,36 @@ export default class Amp {
 
     const inputComponent = AMP_TYPES_SCHEMAS[ampTypeRequested].INPUT;
     const initializatedInputComponent = new Noisefy[capitalize(inputComponent.type)](this._audioContext);
-    console.log('creating ', capitalize(inputComponent.type));
+    trace('creating ', capitalize(inputComponent.type));
     for (const setting of inputComponent.settingsList) {
-      console.log('initializing', setting.name, 'setting to value:', setting.value);
+      trace('initializing', setting.name, 'setting to value:', setting.value);
       initializatedInputComponent[setting.name] = setting.value;
     }
     this._input = initializatedInputComponent;
 
     const outputComponent = AMP_TYPES_SCHEMAS[ampTypeRequested].OUTPUT;
     const initializatedOuputComponent = new Noisefy[capitalize(outputComponent.type)](this._audioContext);
-    console.log('creating ', capitalize(outputComponent.type));
+    trace('creating ', capitalize(outputComponent.type));
     for (const setting of outputComponent.settingsList) {
-      console.log('initializing', setting.name, 'setting to value:', setting.value);
+      trace('initializing', setting.name, 'setting to value:', setting.value);
       initializatedOuputComponent[setting.name] = setting.value;
     }
     this._output = initializatedOuputComponent;
 
     const cabinetComponent = AMP_TYPES_SCHEMAS[ampTypeRequested].CABINET;
     const initializatedCabinetComponent = new Noisefy[capitalize(cabinetComponent.type)](this._audioContext);
-    console.log('creating ', capitalize(cabinetComponent.type));
+    trace('creating ', capitalize(cabinetComponent.type));
     for (const setting of cabinetComponent.settingsList) {
-      console.log('initializing', setting.name, 'setting to value:', setting.value);
+      trace('initializing', setting.name, 'setting to value:', setting.value);
       initializatedCabinetComponent[setting.name] = setting.value;
     }
     this._cabinet = initializatedCabinetComponent;
 
 
-    console.log('channel 1', this._channel1);
-    console.log('channel 2', this._channel2);
-    console.log('input', this._input);
-    console.log('output', this._output);
+    trace('channel 1', this._channel1);
+    trace('channel 2', this._channel2);
+    trace('input', this._input);
+    trace('output', this._output);
 
     this._ampBypass = new Noisefy.Volume(this._audioContext);
     this._channel1Bypass = new Noisefy.Volume(this._audioContext);
@@ -97,7 +98,6 @@ export default class Amp {
     this._channel2Bypass.level = 1;
     this._channel2Bypass.mute = true;
     this._activeChannel = 1;
-
     // By default amp muted
     this.muted = true;
     // Set the type
@@ -137,13 +137,6 @@ export default class Amp {
   get activeChannel() {
     return this._activeChannel;
   }
-
-  // setEffectProperty({channel, componentName, componentProperty, value}) {
-  //   const componentDefinition = AMP_TYPES_SCHEMAS[this._ampType].COMPONENTS[componentName];
-  //   if (!componentDefinition) {console.error(`component definition for ${componentName} not found in AmpGenerator`); return;}
-  //   const selectedChannel = this[`_channel${channel}`];
-  //   selectedChannel.setEffectProperty({componentName, componentProperty, value});
-  // }
 
   getEffectProperty({channel, componentName, componentProperty}) {
     const selectedChannel = this[`_channel${channel}`];
@@ -187,7 +180,7 @@ export default class Amp {
     if (componentPropDefinition === undefined) {console.error(`componentPropDefinition ${componentProperty} not found in AmpGenerator component ${componentName}`); return;}
 
     component[componentProperty] = value;
-    console.log(`∙ Setting to channel ${channel}, ${componentName} component, ${componentProperty} prop the value ${value}`);
+    trace(`∙ Setting to channel ${channel}, ${componentName} component, ${componentProperty} prop the value ${value}`);
   }
 
   setAmpInputEffectProperty({componentProperty, value}) {
@@ -235,7 +228,7 @@ export default class Amp {
     const presetComponents = AMP_TYPES_PRESETS[this._ampType][presetName].COMPONENTS;
     Object.keys(presetComponents).forEach((component)=> {
       presetComponents[component].settingsList.forEach((setting)=> {
-        console.log('Preset', component, setting);
+        trace('Preset', component, setting);
         this.setAmpComponentEffectProperty({componentName: component, componentProperty: setting.name, value: setting.value});
       });
     });

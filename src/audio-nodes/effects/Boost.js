@@ -1,5 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
-import {normalize, scale} from '../../util';
+import {scale, trace} from '../../util';
 import { DISTORTION_TYPES, getDistortionTypeGenerateFunction } from '../factories/DistortionGenerator';
 
 export default class Boost extends MultiAudioNode {
@@ -43,9 +43,11 @@ export default class Boost extends MultiAudioNode {
    */
   set gain(gain) {
     // Set the internal gain value
-    this._gain = parseFloat(normalize(1, gain));
+    this._gain = gain;
+    const normalizedValue = scale(this._gain, 0, 10, 0, 1);
+    trace('internal gain', normalizedValue);
 
-    this.nodes.outputGainNode.gain.value = this._gain;
+    this.nodes.outputGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -62,10 +64,10 @@ export default class Boost extends MultiAudioNode {
    */
   set tone(tone) {
     // Set the internal tone value
-    this._tone = parseFloat(normalize(1, tone));
-
-    // Between 2000 and 4000?
-    // console.log('frequency boost', scale(this._tone, 0, 1, 2000, 4000));
-    this.nodes.filterNode.frequency.value = scale(this._tone, 0, 1, 2000, 4000); // 3317;
+    this._tone = tone;
+    const normalizedValue = scale(this._tone, 0, 10, 2000, 4000);
+    // TODO check that between 2000 and 4000 works
+    trace('internal tone', normalizedValue);
+    this.nodes.filterNode.frequency.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 }

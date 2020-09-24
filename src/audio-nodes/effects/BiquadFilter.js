@@ -2,6 +2,7 @@
 /* eslint-disable max-len */
 import SingleAudioNode from '../SingleAudioNode';
 import {BIQUAD_FILTER_TYPES} from '../factories/FiltersGenerator';
+import { trace } from '../../util';
 
 // type       |Description                                                                        | frequency                                                             |    Q	                                                                        |    gain                                                                 |
 // lowpass    |Standard second-order resonant lowpass filter with 12dB/octave rolloff.            | The cutoff frequency.                                                 | Indicates how peaked the frequency is around the cutoff.                     | Not used                                                                |
@@ -41,7 +42,7 @@ export default class BiquadFilter extends SingleAudioNode {
     if (Object.values(BIQUAD_FILTER_TYPES).includes(typeRequested)) {
       this._type = typeRequested;
       this.node.type = this._type;
-      console.log(`The biquad type ${typeRequested} has been set`);
+      trace(`The biquad type ${typeRequested} has been set`);
     } else {
       throw new Error(`The biquadFilter type ${typeRequested} is not included in the filters set.`);
     }
@@ -54,7 +55,7 @@ export default class BiquadFilter extends SingleAudioNode {
 
   set gain(gain) {
     this._gain = parseFloat(gain);
-    this.node.gain.value = this._gain;
+    this.node.gain.setValueAtTime(this._gain, this.audioContext.currentTime);
   }
 
   get frequency() {
@@ -63,7 +64,7 @@ export default class BiquadFilter extends SingleAudioNode {
 
   set frequency(frequency) {
     this._frequency = frequency;
-    this.node.frequency.value = this._frequency;
+    this.node.frequency.setValueAtTime(this._frequency, this.audioContext.currentTime);
   }
 
   get Q() {
@@ -72,6 +73,6 @@ export default class BiquadFilter extends SingleAudioNode {
 
   set Q(value) {
     this._Q = value;
-    this.node.Q.value = this.Q;
+    this.node.Q.setValueAtTime(this._Q, this.audioContext.currentTime);
   }
 }

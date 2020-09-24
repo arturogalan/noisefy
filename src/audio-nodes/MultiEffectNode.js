@@ -1,6 +1,7 @@
 import SingleAudioNode from './SingleAudioNode';
 import MultiAudioNode from './MultiAudioNode';
 import * as Noisefy from '../index';
+import { trace } from '../util';
 
 const capitalize = function(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -40,9 +41,9 @@ export default class MultiEffectNode {
     let prevComponent;
     compsArray.forEach((component, index)=> {
       const initializatedComponent = new Noisefy[capitalize(component.type)](this._audioContext);
-      console.log('creating ', capitalize(component.type));
+      trace('creating ', capitalize(component.type));
       for (const setting of component.settingsList) {
-        console.log('initializing', setting.name, 'setting to value:', setting.value);
+        trace('initializing', setting.name, 'setting to value:', setting.value);
         initializatedComponent[setting.name] = setting.value;
       }
       // If first or last also input or output of the multiEffectNode
@@ -71,7 +72,7 @@ export default class MultiEffectNode {
 
   //   const normalize = componentPropDefinition.normalize || ((val)=> val);
   //   component[componentProperty] = normalize(value);
-  //   console.log(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
+  //   trace(`Setting to ${componentName} component, ${componentProperty} prop the value ${value}, (normalized: ${normalize(value)})`);
   // }
 
   get components() {
