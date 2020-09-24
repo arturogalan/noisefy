@@ -46,7 +46,8 @@ export default class Volume extends SingleAudioNode {
     if (this._mute && vol > 0) {
       this._levelBeforeMute = volume;
     } else {
-      this.node.gain.value = vol / this._undersampling;
+      const normalizedValue = vol / this._undersampling;
+      this.node.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
       this._mute = (vol === 0);
     }
   }

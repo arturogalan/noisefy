@@ -55,7 +55,7 @@ export default class BiquadFilter extends SingleAudioNode {
 
   set gain(gain) {
     this._gain = parseFloat(gain);
-    this.node.gain.value = this._gain;
+    this.node.gain.setValueAtTime(this._gain, this.audioContext.currentTime);
   }
 
   get frequency() {
@@ -64,7 +64,7 @@ export default class BiquadFilter extends SingleAudioNode {
 
   set frequency(frequency) {
     this._frequency = frequency;
-    this.node.frequency.value = this._frequency;
+    this.node.frequency.setValueAtTime(this._frequency, this.audioContext.currentTime);
   }
 
   get Q() {
@@ -73,6 +73,6 @@ export default class BiquadFilter extends SingleAudioNode {
 
   set Q(value) {
     this._Q = value;
-    this.node.Q.value = this.Q;
+    this.node.Q.setValueAtTime(this._Q, this.audioContext.currentTime);
   }
 }

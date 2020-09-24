@@ -58,9 +58,10 @@ export default class Delay extends MultiAudioNode {
    */
   set wet(wetness) {
     this._wet = wetness;
-    trace('internal wetness', scale(this._wet, 0, 10, 0, 1));
+    const normalizedValue = scale(this._wet, 0, 10, 0, 1);
+    trace('internal wetness', normalizedValue);
     // Set the new value for the wetness controll gain-node from 0 to 1
-    this.nodes.wetGainNode.gain.value = scale(this._wet, 0, 10, 0, 1);
+    this.nodes.wetGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -78,10 +79,11 @@ export default class Delay extends MultiAudioNode {
   set speed(speed) {
     // Set the internal speed value 0 to 1
     this._speed = speed;
-    trace('internal _speed', scale(this._speed, 0, 10, 0, 1));
+    const normalizedValue = scale(this._speed, 0, 10, 0, 1);
+    trace('internal _speed', normalizedValue);
 
     // Set the delayTime value of the delay-node
-    this.nodes.delayNode.delayTime.value = scale(this._speed, 0, 10, 0, 1);
+    this.nodes.delayNode.delayTime.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -99,8 +101,9 @@ export default class Delay extends MultiAudioNode {
   set duration(duration) {
     // Set the internal duration value 0 to 0.9
     this._duration = duration;
+    const normalizedValue = scale(this._duration, 0, 10, 0, 1);
 
     // Set the duration gain-node value
-    this.nodes.durationGainNode.gain.value = scale(this._duration, 0, 10, 0, 1);
+    this.nodes.durationGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 }

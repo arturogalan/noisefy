@@ -17,10 +17,6 @@ const getInputResponseFile = function(file) {
  * This class lets you add a reverb effect.
  */
 export default class Reverb extends MultiAudioNode {
-  // _wet;
-  // _level;
-  // _buffer;
-
   constructor(audioContext) {
     super(audioContext);
 
@@ -85,10 +81,11 @@ export default class Reverb extends MultiAudioNode {
   set wet(wetness) {
     // Set the internal wetness value 0 to 1
     this._wet = wetness;
-    trace('internal wetness', scale(this._wet, 0, 10, 0, 1));
+    const normalizedValue = scale(this._wet, 0, 10, 0, 1);
+    trace('internal wetness', normalizedValue);
 
     // Set the new value for the wetness controll gain-node
-    this.nodes.wetGainNode.gain.value = scale(this._wet, 0, 10, 0, 1);
+    this.nodes.wetGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -106,10 +103,12 @@ export default class Reverb extends MultiAudioNode {
   set level(level) {
     // Set the internal level value
     this._level = level;
-    trace('internal level', scale(this._level, 0, 10, 0, 1));
+    const normalizedValue = scale(this._wet, 0, 10, 0, 1);
+
+    trace('internal level', normalizedValue);
 
     // Set the delayTime value of the delay-node
-    this.nodes.levelGainNode.gain.value = scale(this._level, 0, 10, 0, 1);
+    this.nodes.levelGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**

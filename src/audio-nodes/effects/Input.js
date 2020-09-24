@@ -4,7 +4,7 @@ import MultiAudioNode from '../MultiAudioNode';
 import {
   MediaStreamAudioSourceNode,
 } from 'standardized-audio-context';
-// import {convertToMono} from '../../util';
+import {convertToMono} from '../../util';
 
 
 export default class Input extends SingleAudioNode {
@@ -34,9 +34,10 @@ export default class Input extends SingleAudioNode {
             latency: 0,
           },
         }).then((mediaStream)=> {
-          this.node = new MediaStreamAudioSourceNode(this.audioContext, {
+          const input = new MediaStreamAudioSourceNode(this.audioContext, {
             mediaStream,
           });
+          this.node = this._isConvertedToMono ? convertToMono(this.audioContext, input) : input;
           this._hasPermissions = true;
           if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();

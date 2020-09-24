@@ -21,7 +21,7 @@ export default class Presence extends SingleAudioNode {
 
   set gain(gain) {
     const normalizedValue = (parseFloat(gain) - 5) * 2;
-    this.node.gain.value = normalizedValue;
+    this.node.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
     this._gain = gain;
   }
 }

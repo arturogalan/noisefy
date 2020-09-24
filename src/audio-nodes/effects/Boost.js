@@ -44,9 +44,10 @@ export default class Boost extends MultiAudioNode {
   set gain(gain) {
     // Set the internal gain value
     this._gain = gain;
-    trace('internal gain', scale(this._gain, 0, 10, 0, 1));
+    const normalizedValue = scale(this._gain, 0, 10, 0, 1);
+    trace('internal gain', normalizedValue);
 
-    this.nodes.outputGainNode.gain.value = scale(this._gain, 0, 10, 0, 1);
+    this.nodes.outputGainNode.gain.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 
   /**
@@ -64,9 +65,9 @@ export default class Boost extends MultiAudioNode {
   set tone(tone) {
     // Set the internal tone value
     this._tone = tone;
-
-    // Between 2000 and 4000?
-    trace('internal tone', scale(this._tone, 0, 10, 2000, 4000));
-    this.nodes.filterNode.frequency.value = scale(this._tone, 0, 10, 2000, 4000); // 3317;
+    const normalizedValue = scale(this._tone, 0, 10, 2000, 4000);
+    // TODO check that between 2000 and 4000 works
+    trace('internal tone', normalizedValue);
+    this.nodes.filterNode.frequency.setValueAtTime(normalizedValue, this.audioContext.currentTime);
   }
 }

@@ -20,6 +20,7 @@ export default class Distortion extends SingleAudioNode {
 
   set intensity(intensity) {
     validateValues(intensity, [0, 10], 'distortion');
+    this._intensity = intensity;
     // Set the internal intensity value.
     const value = 150 * parseFloat(intensity);
     const minp = 0;
@@ -33,7 +34,6 @@ export default class Distortion extends SingleAudioNode {
     const normalizedIntensity = Math.exp(minv + scale * (value - minp));
     trace('setting', this.distortionType, 'normalized intensity', normalizedIntensity);
     this.node.curve = getDistortionTypeGenerateFunction(this.distortionType)(normalizedIntensity);
-    this._intensity = intensity;
   }
 
   get distortionType() {
