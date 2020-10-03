@@ -19,6 +19,7 @@ import { deviceList, deviceListHandler, createAudioContext } from './util';
 import Distortion from './audio-nodes/effects/Distortion';
 import { DISTORTION_TYPES, DISTORTION_PRESETS, CLEAN_PRESETS } from './audio-nodes/factories/DistortionGenerator';
 import Amp from './audio-nodes/amp/Amp';
+import Synth from './instruments/Synth';
 import { AMP_TYPES, AMP_COMPONENT_NAME, AMP_SETTING_NAME } from './audio-nodes/factories/AmpGenerator';
 
 import { BIQUAD_FILTER_TYPES } from './audio-nodes/factories/FiltersGenerator';
@@ -53,4 +54,5 @@ export {
   AMP_SETTING_NAME,
   BIQUAD_FILTER_TYPES,
   PRESET_TYPES,
+  Synth,
 };
