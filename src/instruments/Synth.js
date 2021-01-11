@@ -36,7 +36,6 @@ export default class Synth {
   set volume(value) {
     this._volume = Number(value);
     const normalizedValue = scale(value, 0, 100, 0, 1);
-    console.log('setting value', normalizedValue);
     this._gain.gain.setValueAtTime(normalizedValue, this._audioContext.currentTime);
   }
 
@@ -77,7 +76,6 @@ export default class Synth {
     possibleOctaves.forEach((_, octave)=> {
       Object.keys(this._activeOscillators).forEach((key)=> {
         this.stopNote({key, octave});
-        console.log('stopping', key, octave);
       });
     });
   }

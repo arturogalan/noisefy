@@ -1,5 +1,5 @@
 import MultiAudioNode from '../MultiAudioNode';
-import { normalize } from '../../util';
+import {scale} from '../../util';
 import { CABINET_FILES } from '../factories/CabinetGenerator';
 
 const CABINET_LOCAL_FILES = {};
@@ -147,11 +147,11 @@ export default class Cabinet extends MultiAudioNode {
   }
 
   set gain(value) {
-    const normalizedValue = parseFloat(normalize(1, value));
+    this._gain = value;
+    const normalizedValue = scale(value, 0, 10, 0, 1);
     const wetValue = Math.cos(normalizedValue * Math.PI / 2);
     const levelValue = Math.cos((1 - normalizedValue) * Math.PI / 2);
     this.wet = wetValue;
     this.level = levelValue;
-    this._gain = normalizedValue;
   }
 }

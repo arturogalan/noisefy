@@ -624,7 +624,7 @@ export const AMP_TYPES_SCHEMAS = {
         },
         {
           name: 'gain',
-          value: 90,
+          value: 9,
           type: AMP_SETTING_TYPE.CABINET_KNOB,
         },
       ],
